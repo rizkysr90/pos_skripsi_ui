@@ -1,8 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import authReducer from '../features/authSlice.js';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer, persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
 
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    auth: persistedAuthReducer
   },
+  middleware: [thunk]
 });
+
+export const persistor = persistStore(store)
