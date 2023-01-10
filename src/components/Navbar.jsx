@@ -14,42 +14,15 @@ export const Navbar = () => {
     }
     
   return (
-        <div className="navbar bg-primary py-4 px-1 shadow-lg lg:px-10 ">
+        <div className="navbar bg-primary py-4 px-1 shadow-lg lg:px-10 drop-shadow-lg ">
             <div className="navbar-start">
-                <div className="dropdown block lg:hidden">
-                    <label tabIndex={0} className="btn btn-ghost btn-circle text-primary-content">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-                    </label>
-                    <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-72">
-                        <li><Link to = "/">Homepage</Link></li>
-                        <li><Link to = "/">Portfolio</Link></li>
-                        <li><Link to = "/">About</Link></li>
-                    </ul>
-                </div>
-                <Link to = "/" className="btn btn-ghost flex normal-case text-xl text-primary-content">Rizki Plastik</Link>
+                <Link to = "/" className="btn btn-ghost flex normal-case text-xl text-base-100">Logo</Link>
             </div>
-            <div className="navbar-center">
-                <div className="dropdown hidden lg:block">
-                    <label tabIndex={0} className="btn btn-ghost btn-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-                    </label>
-                    <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><Link to = "/">Homepage</Link></li>
-                        <li><Link to = "/">Portfolio</Link></li>
-                        <li><Link to = "/">About</Link></li>
-                    </ul>
-                </div>
-            </div>
-            
             <div className="navbar-end ">
-                <div className="indicator" >
-                    <span className="indicator-item badge-sm badge badge-warning text-warning-content">99</span> 
-                    <Link to = "/" className=' text-primary-content'><FontAwesomeIcon icon={faCartShopping} size="xl" /></Link>
-                </div>
                 {user ? 
                 <div className="dropdown ml-4 dropdown-end">
                     <label tabIndex={0} 
-                        className="btn btn-ghost mr-2 normal-case text-primary-content px-4 flex flex-col">
+                        className="btn btn-ghost mr-2 normal-case text-base-100 px-4 flex flex-col">
                             <FontAwesomeIcon icon={faUser} size='xl'/>
                             <span className='text-xs'>{user.role === "admin" ? 'Admin' : 'Akun'}</span>
                     </label>

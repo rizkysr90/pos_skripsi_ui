@@ -22,14 +22,14 @@ export const Login = () => {
     
     useEffect(() => {
         if (user || isSuccess) {
-            navigate("/");
+            navigate("/admin/dashboard");
         }
         dispatch(reset());
     }, [user, isSuccess, dispatch, navigate]);
     return (
             <div className="hero min-h-screen bg-base-200">
-                <div className="hero-content flex-col lg:flex-row-reverse">
-                    <div className="text-center lg:text-left">
+                <div className="hero-content flex-col ">
+                    <div className="text-center ">
                         <h1 className="text-5xl font-bold">Login now!</h1>
                         <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
                     </div>
@@ -51,14 +51,14 @@ export const Login = () => {
                             <label className="label" htmlFor='password'>
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="text" 
+                            <input type="password" 
                                 placeholder="password" 
                                 name='password' 
                                 id="password" 
                                 className="input input-bordered" />
-                            <label className="label">
+                            {/* <label className="label">
                                 <Link to="/" className="label-text-alt link link-hover">Forgot password?</Link>
-                            </label>
+                            </label> */}
                         </div>
                         <div className="form-control mt-6">
                             <button type="submit" className="btn btn-primary">{isLoading ? "Loading..." : "Login"}</button>

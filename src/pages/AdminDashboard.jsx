@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import BeatLoader from "react-spinners/BeatLoader";
 import { Drawer } from '../components/Drawer';
 import { BottomNav } from '../components/BottomNav';
+import { Navbar } from '../components/Navbar';
 
 const override = {
     display: "flex",
@@ -21,6 +22,7 @@ export const AdminDashboard = () => {
     const [isLoading, setisLoading] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
+        console.log('OKE GUYS');
         const verifyUser = async () => {
             try {
                 setisLoading(true);
@@ -32,7 +34,7 @@ export const AdminDashboard = () => {
             }
         }
         verifyUser()
-    }, [navigate])
+    }, [])
   return (
     <>
         {isLoading ?  
@@ -44,9 +46,10 @@ export const AdminDashboard = () => {
                 aria-label="Loading Spinner"
                 data-testid="loader"
             /> :
-            <div className='min-h-screen bg-primary'>
+            <div className='min-h-screen bg-base-200'>
+                {/* <Navbar/> */}
                 <Drawer/>
-                <BottomNav/>
+                {/* <BottomNav/> */}
             </div>
         }
         
