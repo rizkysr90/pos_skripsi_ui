@@ -22,7 +22,6 @@ export const AdminDashboard = () => {
     const [isLoading, setisLoading] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
-        console.log('OKE GUYS');
         const verifyUser = async () => {
             try {
                 setisLoading(true);
@@ -46,7 +45,7 @@ export const AdminDashboard = () => {
                 aria-label="Loading Spinner"
                 data-testid="loader"
             /> :
-            <div className='min-h-screen bg-base-200'>
+            <div className=' bg-base-200'>
                 {/* <Navbar/> */}
                 <Drawer/>
                 {/* <BottomNav/> */}
