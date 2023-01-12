@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faBars, faPowerOff, faClockRotateLeft, faLayerGroup, faWarehouse, faMoneyCheckDollar} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faPowerOff,  faClockRotateLeft, faLayerGroup, 
+    faWarehouse, faMoneyCheckDollar, faUser} from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -86,11 +87,16 @@ export const Drawer = () => {
                                 Kelola Produk</span>
                         </Link>
                     </li>
-                    <li><Link to="/" className='btn btn-lg btn-ghost normal-case font-normal text-base-100 '>
+                    <li><NavLink to="/admin/dashboard/productCategories" 
+                         className= {({isActive}) => isActive ? 
+                            'btn btn-lg btn-secondary normal-case font-normal text-neutral '
+                        :
+                            'btn btn-lg btn-ghost normal-case font-normal text-base-100 '}
+                        >
                             <span className='text-left w-full'>
                                 <FontAwesomeIcon icon={faLayerGroup}  className="mr-3" />
                                 Kelola Kategori</span>
-                        </Link>
+                        </NavLink>
                     </li>
                     <li><NavLink to="/admin/dashboard/employees" 
                         className= {({isActive}) => isActive ? 
@@ -99,7 +105,7 @@ export const Drawer = () => {
                             'btn btn-lg btn-ghost normal-case font-normal text-base-100 '}
                         >
                             <span className='text-left w-full'>
-                                <FontAwesomeIcon icon={faLayerGroup}  className="mr-3" />
+                                <FontAwesomeIcon icon={faUser}  className="mr-3" />
                                 Kelola Pegawai</span>
                         </NavLink>
                     </li>

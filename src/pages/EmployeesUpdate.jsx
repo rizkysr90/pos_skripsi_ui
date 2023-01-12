@@ -1,11 +1,18 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function EmployeesNew() {
+export default function EmployeesUpdate() {
+    let { userId } = useParams();
+    const [employee, setEmployee] = useState({
+        name : "",
+        email : "",
+        phone_number : "",
+        role : ""
+    });
     const navigate = useNavigate();
     const override = {
         display: "flex",
@@ -21,19 +28,23 @@ export default function EmployeesNew() {
         margin: "0 auto",
     };
     const [isLoading, setisLoading] = useState(false);
+    // const handleChnage = (e) => {
+    //     setEmployee({...employee, e.target.name : "ok"})
+    // }
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         setisLoading(true);
         const form = e.target;
         const formData = new FormData(form);
         const formJSON = Object.fromEntries(formData.entries());
+        console.log(formJSON);
         try {
-            const res = await axios.post('http://localhost:8080/auth/register/users', formJSON);
+            const res = await axios.put(`${process.env.REACT_APP_API_HOST}/users/${userId}`, formJSON);
             setisLoading(false);
             toast.success(`${res.response?.data.metadata.msg}`,{
                 position: toast.POSITION.TOP_RIGHT
             });
-            navigate('/admin/dashboard/employees')
+            navigate('/admin/dashboard/employees');
         } catch (error) {
             let errMsg = 'Internal Server Error'
             if (error.response?.status !== 500) {
@@ -44,8 +55,32 @@ export default function EmployeesNew() {
                 position: toast.POSITION.TOP_RIGHT
             });
             setisLoading(false);
+            // console.log(error);
         }
     }
+    useEffect(() => {
+        const getUsersById = async () => {
+            try {
+                setisLoading(true);
+                let res = await axios.get(`${process.env.REACT_APP_API_HOST}/users/${userId}`).then(res => res.data);
+                setEmployee(res.data);
+                setisLoading(false);
+                
+            } catch (error) {
+                console.log('tes');
+                let errMsg = 'Internal Server Error'
+                if (error.response?.status !== 500) {
+                    errMsg = error.response?.data?.metadata?.msg
+                }
+                
+                toast.error(`Error ${error?.response?.status} - ${errMsg}`, {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+                setisLoading(false);
+            }
+        }
+        getUsersById();
+    },[userId])
   return (
     <>
         <BeatLoader
@@ -58,19 +93,34 @@ export default function EmployeesNew() {
         /> 
         <ToastContainer/>
         <div className='mb-20'>
-            <div className='text-3xl text-primary'>Tambah Pegawai</div>
-            <form onSubmit={handleFormSubmit}>
+            <div className='text-3xl text-primary'>Edit Pegawai</div>
+            <form onSubmit={handleFormSubmit}
+                onReset={() => window.location.reload(true)}
+            >
                 <div className="form-control w-full max-w-xs mt-4">
                     <label className="label" htmlFor="name">
                         <span className="label-text">Nama</span>
                     </label>
-                    <input type="text" placeholder="Nama Karyawan" id="name" name='name' className="input input-bordered w-full max-w-xs" />
+                    <input type="text" placeholder="Nama Karyawan" id="name" 
+                    name='name' 
+                    className="input input-bordered w-full max-w-xs" 
+                    value={employee?.name}
+                    onChange={(e) => setEmployee({...employee, name : e.target.value})}
+                    />
+                    
                 </div>
                 <div className="form-control w-full max-w-xs mt-4">
                     <label className="label" htmlFor="email">
                         <span className="label-text">Email</span>
                     </label>
-                    <input type="email" placeholder="Email Karyawan" id="email" name='email' className="input input-bordered w-full max-w-xs" />
+                    <input type="email" 
+                    placeholder="Email Karyawan" 
+                    id="email" 
+                    name='email' 
+                    className="input input-bordered w-full max-w-xs" 
+                    value={employee?.email}
+                    onChange={(e) => setEmployee({...employee, email : e.target.value})}
+                    />
                 </div>
                 <div className="form-control w-full max-w-xs mt-4">
                     <label className="label" htmlFor="password">
@@ -88,7 +138,14 @@ export default function EmployeesNew() {
                     <label className="label" htmlFor='phone_number'>
                         <span className="label-text">Nomor HP : ( Format +62 )</span>
                     </label>
-                    <input type="text" name="phone_number" id="phone_number" placeholder="6281283007959" className="input input-bordered w-full max-w-xs" />
+                    <input type="text" 
+                    name="phone_number" 
+                    id="phone_number" 
+                    placeholder="81283007959" 
+                    className="input input-bordered w-full max-w-xs" 
+                    value={employee?.phone_number}
+                    onChange={(e) => setEmployee({...employee, phone_number : e.target.value})}
+                    />
                 </div>
                 <div className="form-control w-full max-w-xs mt-4">
                     <label className="label">
@@ -100,6 +157,8 @@ export default function EmployeesNew() {
                             className="radio radio-xs radio-primary" 
                             value="admin"
                             id='admin'
+                            onChange={(e) => setEmployee({...employee, role : e.target.value})}
+                            checked = {employee?.role === "admin" ? true : false}
                             />
                         <label className='ml-2 text-xs' htmlFor='admin'>Admin</label>
                     </div>
@@ -109,12 +168,19 @@ export default function EmployeesNew() {
                             className="radio radio-xs radio-primary" 
                             value="kasir"
                             id='kasir'
+                            onChange={(e) => setEmployee({...employee, role : e.target.value})}
+                            checked = {employee?.role === "kasir" ? true : false}
                             />
                         <label htmlFor='kasir' className='ml-2 text-xs'>Kasir</label>
                     </div>
                     <button 
-                    type='submit'
-                    className='btn btn-primary hover:text-white'>Simpan Data</button>
+                        type='reset'
+                        className='btn btn-warning mb-4 hover:text-white'>Reset Data
+                    </button>
+                    <button 
+                        type='submit'
+                        className='btn btn-primary hover:text-white'>Simpan Data
+                    </button>
                 </div>
             </form>
         </div>

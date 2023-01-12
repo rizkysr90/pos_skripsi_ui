@@ -6,6 +6,8 @@ import { Login } from './pages/Login';
 import { AdminDashboard } from './pages/AdminDashboard';
 import Employees from './pages/Employees';
 import EmployeesNew from './pages/EmployeesNew';
+import EmployeesUpdate from './pages/EmployeesUpdate';
+import ProductCategories from './pages/ProductCategories';
 function App() {
   return (
     <div>
@@ -17,6 +19,8 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard/>}>
             <Route path="employees" element= {<Employees/>}/>
             <Route path="employees/new" element = {<EmployeesNew/>}/>
+            <Route path="employees/edit/:userId" element = {<EmployeesUpdate/>}/>
+            <Route path='productCategories' element= {<ProductCategories/>}/>
           </Route>
           
         </Routes>
