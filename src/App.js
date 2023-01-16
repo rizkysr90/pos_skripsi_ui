@@ -8,6 +8,10 @@ import Employees from './pages/Employees';
 import EmployeesNew from './pages/EmployeesNew';
 import EmployeesUpdate from './pages/EmployeesUpdate';
 import ProductCategories from './pages/ProductCategories';
+import Products from './pages/Products';
+import ProductsNew from './pages/ProductsNew';
+import ProductsUpdate from './pages/ProductsUpdate';
+import Cashier from './pages/Cashier';
 function App() {
   return (
     <div>
@@ -21,8 +25,11 @@ function App() {
             <Route path="employees/new" element = {<EmployeesNew/>}/>
             <Route path="employees/edit/:userId" element = {<EmployeesUpdate/>}/>
             <Route path='productCategories' element= {<ProductCategories/>}/>
+            <Route path='products' element = {<Products/>}/>
+            <Route path='products/new' element={<ProductsNew/>}/>
+            <Route path='products/edit/:productId' element={<ProductsUpdate/>}/>
+            <Route path='cashier' element={<Cashier/>}/>
           </Route>
-          
         </Routes>
       </BrowserRouter>
     </div>

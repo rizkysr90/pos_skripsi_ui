@@ -69,11 +69,17 @@ export const Drawer = () => {
                             <span className='text-left w-full'>Nama Toko</span>
                         </Link>
                     </li>
-                    <li><Link to ="/" className='btn btn-lg btn-ghost normal-case font-normal text-base-100 '>
+                    <li><NavLink to ="/admin/dashboard/cashier" 
+                        className= {({isActive}) => isActive ? 
+                        'btn btn-lg btn-secondary normal-case font-normal text-neutral '
+                        :
+                        'btn btn-lg btn-ghost normal-case font-normal text-base-100 '}
+                        >
                             <span className='text-left w-full'>
                                 <FontAwesomeIcon icon={faMoneyCheckDollar}  className="mr-3" />
-                                Penjualan Offline</span>
-                        </Link>
+                                Penjualan Offline
+                            </span>
+                        </NavLink>
                     </li>
                     <li><Link to="/" className='btn btn-lg btn-ghost normal-case font-normal text-base-100 '>
                             <span className='text-left w-full'>
@@ -81,11 +87,16 @@ export const Drawer = () => {
                                 Penjualan Online</span>
                         </Link>
                     </li>
-                    <li><Link to="/" className='btn btn-lg btn-ghost normal-case font-normal text-base-100 '>
+                    <li><NavLink to="/admin/dashboard/products" 
+                        className= {({isActive}) => isActive ? 
+                            'btn btn-lg btn-secondary normal-case font-normal text-neutral '
+                            :
+                            'btn btn-lg btn-ghost normal-case font-normal text-base-100 '}
+                            >
                             <span className='text-left w-full'>
                                 <FontAwesomeIcon icon={faWarehouse}  className="mr-3" />
                                 Kelola Produk</span>
-                        </Link>
+                        </NavLink>
                     </li>
                     <li><NavLink to="/admin/dashboard/productCategories" 
                          className= {({isActive}) => isActive ? 
