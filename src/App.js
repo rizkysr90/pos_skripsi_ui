@@ -12,6 +12,7 @@ import Products from './pages/Products';
 import ProductsNew from './pages/ProductsNew';
 import ProductsUpdate from './pages/ProductsUpdate';
 import Cashier from './pages/Cashier';
+import CashierTransaction from './pages/CashierTransaction';
 function App() {
   return (
     <div>
@@ -29,6 +30,7 @@ function App() {
             <Route path='products/new' element={<ProductsNew/>}/>
             <Route path='products/edit/:productId' element={<ProductsUpdate/>}/>
             <Route path='cashier' element={<Cashier/>}/>
+            <Route path='cashier/transactions' element={<CashierTransaction/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -9,7 +9,7 @@ export const Login = () => {
     const dispatch = useDispatch();
     const { user, isError, isSuccess, isLoading, message } = useSelector(
         (state) => state.auth
-      );
+    );
     const handleAuth = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);

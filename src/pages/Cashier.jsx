@@ -1,10 +1,23 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react' 
+import { useSelector, useDispatch } from 'react-redux';
 import { BeatLoader } from 'react-spinners';
-
+import InputQTYCashier from '../components/InputQTYCashier';
+import ModalCashier from '../components/ModalCashier';
+import { addProduct, resetProduct } from "../features/cashierSlice";
 export default function Cashier() {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
+    const productsOrdered  = useSelector(
+        (state) => state.cashier.products
+    );
+
+    const [selectedProduct, setSelecetedProduct] = useState({
+      name : "",
+      stock : "",
+      originPrice : "",
+    })
     const override = {
         display: "flex",
         alignItems: "center",
@@ -18,6 +31,19 @@ export default function Cashier() {
         minHeight: "100%",
         margin: "0 auto",
       };
+    const [modalInQty, setModalInQty] = useState(false);
+    const handleInputQty = ({name, originPrice, qty, amount}) => {
+      const payload = {
+          name,
+          originPrice,
+          qty,
+          amount
+      }
+      dispatch(addProduct(payload));
+    }
+    const resetSelectedProduct = () => {
+      dispatch(resetProduct())
+    }
     useEffect(() => {
         const getProduct = async () => {
               try {
@@ -33,15 +59,32 @@ export default function Cashier() {
       }, [])
     return (
     <>
-        <BeatLoader
-            color={'#6419E6'}
-            loading={isLoading}
-            cssOverride={override}
-            size={20}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-        /> 
+      <BeatLoader
+          color={'#6419E6'}
+          loading={isLoading}
+          cssOverride={override}
+          size={20}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+      /> 
+      {
+        modalInQty ? 
+        <InputQTYCashier
+        header = 'Masukkan QTY'
+        isModalOpen = {setModalInQty}
+        product = {selectedProduct}
+        action={handleInputQty}
+        />
+        :
+        null
+      }
       <div>Cashier</div>
+      <ModalCashier
+        productsOrdered={productsOrdered}
+        resetSelectedProduct={resetSelectedProduct}
+      />
+
+       
       <div className='mt-8'>
           <div className="overflow-x-auto w-full">
             <table className="table w-full">
@@ -73,7 +116,12 @@ export default function Cashier() {
                       </td>
                       <td>Rp{product?.sell_price}</td>
                       <th className= 'flex justify-end'>
-                        <div className='btn btn-primary'>
+                        <div className='btn btn-primary'
+                          onClick={() => {
+                            setModalInQty(true);
+                            setSelecetedProduct({name : product?.name, stock : product?.stock, price : product?.sell_price}) 
+                          }}
+                        >
                             Tambah Ke Keranjang
                         </div>
                       </th>
@@ -84,7 +132,9 @@ export default function Cashier() {
               </tbody>
             </table>
           </div>
+          
       </div>
+      
     </>
   )
 }

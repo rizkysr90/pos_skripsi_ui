@@ -15,7 +15,7 @@ export default function ModalProductCategory(props) {
                             props.editableData ? 
                             <input type="text" 
                             onChange={(e) => props.editableAction(e.target.value)}
-                            value={props.editableData?.name} 
+                            value={props.editableData?.name ? props.editableData?.name : ""} 
                             name='name' placeholder="Masukkan Nama Kategori" 
                             className="input input-bordered w-full max-w-xs" /> :
                             <input type="text" name='name' placeholder="Masukkan Nama Kategori" 
