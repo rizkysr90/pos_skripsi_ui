@@ -32,12 +32,13 @@ export default function Cashier() {
         margin: "0 auto",
       };
     const [modalInQty, setModalInQty] = useState(false);
-    const handleInputQty = ({name, originPrice, qty, amount}) => {
+    const handleInputQty = ({name, originPrice, qty, amount, product_id}) => {
       const payload = {
           name,
           originPrice,
           qty,
-          amount
+          amount,
+          product_id
       }
       dispatch(addProduct(payload));
     }
@@ -119,7 +120,7 @@ export default function Cashier() {
                         <div className='btn btn-primary'
                           onClick={() => {
                             setModalInQty(true);
-                            setSelecetedProduct({name : product?.name, stock : product?.stock, price : product?.sell_price}) 
+                            setSelecetedProduct({id: product?.id, name : product?.name, stock : product?.stock, price : product?.sell_price}) 
                           }}
                         >
                             Tambah Ke Keranjang

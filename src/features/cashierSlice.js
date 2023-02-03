@@ -1,5 +1,4 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 // const initialState = {
 //     order : [
@@ -14,6 +13,7 @@ import { act } from "react-dom/test-utils";
 const initialState = {
     products : [],
     total : 0,
+    payAmount : 0
 }
 
 export const cashierSlice = createSlice({
@@ -32,6 +32,8 @@ export const cashierSlice = createSlice({
         resetProduct : {
             reducer : (state) => {
                 state.products = []
+                state.payAmount = 0
+                state.total = 0
             }
         },
         modifiedQty : {
@@ -55,10 +57,15 @@ export const cashierSlice = createSlice({
             reducer : (state, action) => {
                 state.total = action.payload.sumPrice
             }
+        },
+        payAmount : {
+            reducer : (state, action) => {
+                state.payAmount = Number(action.payload.pay)
+            }
         }
     }
 })
 
 
-export const {addProduct, resetProduct, modifiedQty, destroyProduct, sumOrders} = cashierSlice.actions;
+export const {addProduct, resetProduct, modifiedQty, destroyProduct, sumOrders,payAmount} = cashierSlice.actions;
 export default cashierSlice.reducer;

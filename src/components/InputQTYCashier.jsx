@@ -25,10 +25,12 @@ export default function InputQTYCashier(props) {
                         <div 
                         onClick={() => {
                             const payload = {
+                                product_id : props?.product?.id,
                                 name :props?.product?.name,
                                 originPrice : props?.product?.price,
                                 qty : Number(quantity),
                                 amount : Number(quantity) * props?.product?.price
+
                             }
                             props.action(payload)
                             props.isModalOpen(false)
