@@ -14,6 +14,9 @@ import ProductsUpdate from './pages/ProductsUpdate';
 import Cashier from './pages/Cashier';
 import CashierTransaction from './pages/CashierTransaction';
 import CashierTransactionSuccess from './pages/CashierTransactionSuccess';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { Drawer } from './components/Drawer';
+
 function App() {
   return (
     <div>
@@ -22,7 +25,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/oke" element={<div>Oke nice progress</div>} />
           {/* <Route path="/auth/login" element={<Login/>} /> */}
-          <Route path="/admin/dashboard" element={<AdminDashboard/>}>
+          <Route path="/admin/dashboard" element={<Drawer/>}>
             <Route path="employees" element= {<Employees/>}/>
             <Route path="employees/new" element = {<EmployeesNew/>}/>
             <Route path="employees/edit/:userId" element = {<EmployeesUpdate/>}/>

@@ -1,24 +1,55 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faBars, faPowerOff,  faClockRotateLeft, faLayerGroup, 
-    faWarehouse, faMoneyCheckDollar, faUser} from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+        faWarehouse, faMoneyCheckDollar, faUser, faCashRegister} 
+        from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
-
+import override from '../styles/spinner';
+import useSWR from 'swr';
+import { ClipLoader } from 'react-spinners';
 import { Link, Outlet, NavLink } from 'react-router-dom';
-import { logoutUser } from '../features/authSlice';
+import { logoutUser, reset, firstLogin } from '../features/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const Drawer = () => {
     const dispatch = useDispatch();
-    // const { user } = useSelector((state) => state.auth);
+    const { isLoading, user, isSuccess } = useSelector((state) => state.auth);
     const navigate = useNavigate();
-
+    
+    const checkLoginFetcher = async (url) => await axios.get(url);
+    const {error : IsUnauthorized} = useSWR(`${process.env.REACT_APP_API_HOST}/getAdmin`, checkLoginFetcher);
     const handleLogout = () => {
         dispatch(logoutUser());
-        navigate('/')
     }
+    useEffect(() => {
+        if (IsUnauthorized && !isSuccess) {
+            dispatch(reset());
+            navigate('/');
+        } else if (!IsUnauthorized && isSuccess) {
+            dispatch(firstLogin());
+        }
+        else if (!user) {
+            dispatch(reset());
+            navigate('/');
+        }
+    }, [IsUnauthorized, dispatch, navigate, user])
   return (
     <>
+        {
+            isLoading &&
+            <div className='bg-base-100 absolute z-50 w-full min-h-screen'>
+                <ClipLoader
+                color={"#1eb854"}
+                loading={isLoading}
+                size={35}
+                cssOverride={override}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+                />
+            </div>
+        }
+        { isLoading && <div>Okeee</div>}
        <div className="drawer drawer-mobile">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content flex flex-col bg-base-200">
@@ -34,100 +65,88 @@ export const Drawer = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                     </button>
                 </div>
-                <div className='p-8 min-h-screen bg-base-200'>
+                <div className='p-8 min-h-screen bg-base-100'>
                     <Outlet/>
                 </div>
-                {/* Start Of Navbar */}
-                {/* <div className='flex py-4 fixed top-0 left-0 z-50 w-full justify-end px-4 items-center bg-secondary'>
-                    {user ? 
-                    <div className="dropdown dropdown-end">
-                        <label tabIndex={0} 
-                            className="btn btn-ghost normal-case text-primary flex flex-col">
-                                <FontAwesomeIcon icon={faUser} size='xl'/>
-                                <span className='text-xs'>
-                                    {user.role === "admin" || user.role === "superadmin" ? 'Admin' : 'Akun'}
-                                </span>
-                        </label>
-                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-neutral rounded-box w-52">
-                            <Link to = "/" className='btn normal-case btn-ghost text-neutral-content'>Lihat Toko</Link>
-                            <button 
-                            onClick={handleLogout}
-                            className='btn normal-case btn-ghost text-neutral-content'>Logout</button>
-                        </ul>
-                    </div> 
-                    : 
-                    <Link to = "/auth/login" className='btn normal-case ml-8 px-4'>Login</Link>
-                    }
-                </div> */}
-                {/* End Of Navbar */}
             </div> 
             <div className="drawer-side">
                 <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
-                <ul className="menu p-4 w-80 bg-primary relative min-h-screen text-base-100">
+                <ul className="menu p-4 w-80 bg-base-200 relative min-h-screen text-base-content">
                 {/* <!-- Sidebar content here --> */}
-                    <li><Link to="/" className='btn btn-lg btn-ghost normal-case font-bold text-3xl mb-4 text-base-100 '>
+                    <li><Link to="/" className='font-bold text-3xl mb-4 text-primary'>
                             <span className='text-left w-full'>Nama Toko</span>
                         </Link>
                     </li>
                     <li><NavLink to ="/admin/dashboard/cashier" 
-                        className= {({isActive}) => isActive ? 
-                        'btn btn-lg btn-secondary normal-case font-normal text-neutral '
-                        :
-                        'btn btn-lg btn-ghost normal-case font-normal text-base-100 '}
-                        >
-                            <span className='text-left w-full'>
-                                <FontAwesomeIcon icon={faMoneyCheckDollar}  className="mr-3" />
+                            className= {({isActive}) => isActive ? 
+                            'btn btn-primary normal-case font-bold text-primary-content '
+                            :
+                            'btn btn-ghost normal-case '}
+                            >
+                            <span className='text-left w-full flex items-center'>
+                                <FontAwesomeIcon icon={faCashRegister}  className="mr-3" />
                                 Penjualan Offline
                             </span>
                         </NavLink>
                     </li>
-                    <li><Link to="/" className='btn btn-lg btn-ghost normal-case font-normal text-base-100 '>
-                            <span className='text-left w-full'>
+                    <li><NavLink to ="/" 
+                                className= {({isActive}) => isActive ? 
+                                'btn btn-primary normal-case font-bold text-primary-content '
+                                :
+                                'btn btn-ghost normal-case '}
+                            >
+                            <span className='text-left w-full flex items-center'>
                                 <FontAwesomeIcon icon={faMoneyCheckDollar}  className="mr-3" />
                                 Penjualan Online</span>
-                        </Link>
+                        </NavLink>
                     </li>
                     <li><NavLink to="/admin/dashboard/products" 
-                        className= {({isActive}) => isActive ? 
-                            'btn btn-lg btn-secondary normal-case font-normal text-neutral '
-                            :
-                            'btn btn-lg btn-ghost normal-case font-normal text-base-100 '}
+                                className= {({isActive}) => isActive ? 
+                                'btn btn-primary normal-case font-bold text-primary-content '
+                                :
+                                'btn btn-ghost normal-case '}
                             >
-                            <span className='text-left w-full'>
+                            <span className='text-left w-full flex items-center'>
                                 <FontAwesomeIcon icon={faWarehouse}  className="mr-3" />
                                 Kelola Produk</span>
                         </NavLink>
                     </li>
                     <li><NavLink to="/admin/dashboard/productCategories" 
-                         className= {({isActive}) => isActive ? 
-                            'btn btn-lg btn-secondary normal-case font-normal text-neutral '
-                        :
-                            'btn btn-lg btn-ghost normal-case font-normal text-base-100 '}
+                            className= {({isActive}) => isActive ? 
+                            'btn btn-primary normal-case font-bold text-primary-content '
+                            :
+                            'btn btn-ghost normal-case '}
                         >
-                            <span className='text-left w-full'>
+                            <span className='text-left w-full flex items-center'>
                                 <FontAwesomeIcon icon={faLayerGroup}  className="mr-3" />
                                 Kelola Kategori</span>
                         </NavLink>
                     </li>
                     <li><NavLink to="/admin/dashboard/employees" 
-                        className= {({isActive}) => isActive ? 
-                            'btn btn-lg btn-secondary normal-case font-normal text-neutral '
-                        :
-                            'btn btn-lg btn-ghost normal-case font-normal text-base-100 '}
+                            className= {({isActive}) => isActive ? 
+                            'btn btn-primary normal-case font-bold text-primary-content '
+                            :
+                            'btn btn-ghost normal-case '}
                         >
-                            <span className='text-left w-full'>
+                            <span className='text-left w-full flex items-center'>
                                 <FontAwesomeIcon icon={faUser}  className="mr-3" />
                                 Kelola Pegawai</span>
                         </NavLink>
                     </li>
-                    <li><Link className='btn btn-lg btn-ghost normal-case font-normal text-base-100 '>
-                            <span className='text-left w-full'>
+                    <li><NavLink to={'/'}  
+                                className= {({isActive}) => isActive ? 
+                                'btn btn-primary normal-case font-bold text-primary-content '
+                                :
+                                'btn btn-ghost normal-case '}
+                            >
+                            <span className='text-left w-full flex items-center'>
                                 <FontAwesomeIcon icon={faClockRotateLeft}  className="mr-3" />
                                 Riwayat Penjualan
                             </span>
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li><button onClick={handleLogout} className='btn w-full btn-lg absolute btn-ghost normal-case font-normal text-base-100 '>
+                    <li className='mt-auto'>
+                        <button onClick={handleLogout} className='btn btn-ghost normal-case '>
                             <span className='text-left w-full'>
                                 <FontAwesomeIcon icon={faPowerOff}  className="mr-3" />
                                 Keluar

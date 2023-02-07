@@ -3,8 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import BeatLoader from "react-spinners/BeatLoader";
 import { Drawer } from '../components/Drawer';
-import { BottomNav } from '../components/BottomNav';
-import { Navbar } from '../components/Navbar';
+import useSWR from 'swr';
+import { useDispatch, useSelector } from "react-redux";
+import {  reset } from "../features/authSlice";
+
+
 
 const override = {
     display: "flex",
@@ -21,19 +24,16 @@ export const AdminDashboard = () => {
     // const [isError, setIsError] = useState('false');
     const [isLoading, setisLoading] = useState(false);
     const navigate = useNavigate();
+    const checkLoginFetcher = async (url) => await axios.get(url);
+    const {error : IsUnauthorized} = useSWR(`${process.env.REACT_APP_API_HOST}/getAdmin`, checkLoginFetcher);
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        const verifyUser = async () => {
-            try {
-                setisLoading(true);
-                await axios.get('http://localhost:8080/getAdmin');
-                setisLoading(false);
-            } catch (error) {
-                setisLoading(false);
-                navigate('/')
-            }
+        if (IsUnauthorized) {
+            dispatch(reset())
+            navigate('/');
         }
-        verifyUser()
-    }, [])
+    }, [IsUnauthorized])
   return (
     <>
         {isLoading ?  
@@ -45,11 +45,7 @@ export const AdminDashboard = () => {
                 aria-label="Loading Spinner"
                 data-testid="loader"
             /> :
-            <div className=' bg-base-200'>
-                {/* <Navbar/> */}
                 <Drawer/>
-                {/* <BottomNav/> */}
-            </div>
         }
         
     </>
