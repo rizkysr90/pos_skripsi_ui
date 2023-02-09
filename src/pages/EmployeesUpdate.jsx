@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { BeatLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
+import override from '../styles/spinner';
 
 export default function EmployeesUpdate() {
     let { userId } = useParams();
@@ -14,88 +14,87 @@ export default function EmployeesUpdate() {
         role : ""
     });
     const navigate = useNavigate();
-    const override = {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        left:"0",
-        top:"0",
-        backgroundColor:"rgba(0,0,0,.3)",
-        width: "100%",
-        zIndex: "99",
-        minHeight: "100%",
-        margin: "0 auto",
-    };
-    const [isLoading, setisLoading] = useState(false);
-    // const handleChnage = (e) => {
-    //     setEmployee({...employee, e.target.name : "ok"})
-    // }
+    const [isLoading, setIsLoading] = useState(false);
+   
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        setisLoading(true);
+        setIsLoading(true);
         const form = e.target;
         const formData = new FormData(form);
         const formJSON = Object.fromEntries(formData.entries());
-        console.log(formJSON);
         try {
             const res = await axios.put(`${process.env.REACT_APP_API_HOST}/users/${userId}`, formJSON);
-            setisLoading(false);
-            toast.success(`${res.response?.data.metadata.msg}`,{
-                position: toast.POSITION.TOP_RIGHT
-            });
+            setIsLoading(false);
+            toast.success(`${res.response?.data.metadata.msg}`);
             navigate('/admin/dashboard/employees');
         } catch (error) {
-            let errMsg = 'Internal Server Error'
+            let errFromServer = error?.response?.data?.metadata;
+            let errMsg = error.message;
             if (error.response?.status !== 500) {
-                errMsg = error.response?.data?.metadata?.msg
+                if (errFromServer?.msg) {
+                  errMsg = errFromServer?.msg;
+                } 
             }
-            
-            toast.error(`Error ${error?.response?.status} - ${errMsg}`, {
-                position: toast.POSITION.TOP_RIGHT
-            });
-            setisLoading(false);
-            // console.log(error);
+            toast.error(`Error ${error?.response?.status} - ${errMsg}`);
+            setIsLoading(false);
         }
     }
     useEffect(() => {
         const getUsersById = async () => {
             try {
-                setisLoading(true);
+                setIsLoading(true);
                 let res = await axios.get(`${process.env.REACT_APP_API_HOST}/users/${userId}`).then(res => res.data);
                 setEmployee(res.data);
-                setisLoading(false);
+                setIsLoading(false);
                 
             } catch (error) {
-                console.log('tes');
-                let errMsg = 'Internal Server Error'
-                if (error.response?.status !== 500) {
-                    errMsg = error.response?.data?.metadata?.msg
-                }
                 
-                toast.error(`Error ${error?.response?.status} - ${errMsg}`, {
-                    position: toast.POSITION.TOP_RIGHT
-                });
-                setisLoading(false);
+                console.log('tess')
+                let errFromServer = error?.response?.data?.metadata;
+                let errMsg = error.message;
+                if (error.response?.status !== 500) {
+                    if (errFromServer?.msg) {
+                        errMsg = errFromServer?.msg;
+                    } 
+                }
+                toast.error(`Error ${error?.response?.status} - ${errMsg}`);
+                setIsLoading(false);
             }
         }
         getUsersById();
     },[userId])
   return (
     <>
-        <BeatLoader
-            color={'#6419E6'}
-            loading={isLoading}
-            cssOverride={override}
-            size={20}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-        /> 
-        <ToastContainer/>
+       {
+          isLoading && 
+          <div className='bg-base-100 absolute z-50 w-full left-0 top-0 min-h-screen'>
+                <ClipLoader
+                color={"#1eb854"}
+                loading={isLoading}
+                size={35}
+                cssOverride={override}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+                />
+            </div>
+        }
+        <ToastContainer
+           autoClose={3000}
+           limit={1}
+           hideProgressBar={false}
+           newestOnTop={false}
+           closeOnClick={false}
+           rtl={false}
+           pauseOnFocusLoss={false}
+           draggable={false}
+           pauseOnHover
+           theme="dark"
+        />
         <div className='mb-20'>
-            <div className='text-3xl text-primary'>Edit Pegawai</div>
+            <div className=' text-2xl font-bold text-center text-base-content'>Update Pegawai</div>
             <form onSubmit={handleFormSubmit}
                 onReset={() => window.location.reload(true)}
+                className="w-full flex flex-col items-center"
             >
                 <div className="form-control w-full max-w-xs mt-4">
                     <label className="label" htmlFor="name">
@@ -175,11 +174,11 @@ export default function EmployeesUpdate() {
                     </div>
                     <button 
                         type='reset'
-                        className='btn btn-warning mb-4 hover:text-white'>Reset Data
+                        className='btn btn-warning normal-case my-4'>Reset Data
                     </button>
                     <button 
                         type='submit'
-                        className='btn btn-primary hover:text-white'>Simpan Data
+                        className='btn btn-primary normal-case'>Simpan Data
                     </button>
                 </div>
             </form>

@@ -3,23 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BeatLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
-
+import CardProduct from '../components/CardProduct';
+import override from '../styles/spinner';
 export default function Products() {
-  const override = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    left:"0",
-    top:"0",
-    backgroundColor:"rgba(0,0,0,.3)",
-    width: "100%",
-    zIndex: "99",
-    minHeight: "100%",
-    margin: "0 auto",
-  };
+  
   const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]); 
   const handleDeleteProduct = async (deletedId) => {
@@ -57,21 +46,37 @@ export default function Products() {
   }, [])
   return (
     <>
-      <BeatLoader
-            color={'#6419E6'}
-            loading={isLoading}
-            cssOverride={override}
-            size={20}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-        /> 
-        <ToastContainer/>
-      <div className='flex justify-end'>
-          <Link 
-          to='/admin/dashboard/products/new'
-          className='btn btn-primary'>Tambah Produk</Link>
-      </div>
-      <div className='mt-8'>
+        {
+          isLoading && 
+          <div className='bg-base-100 fixed z-50 w-full left-0 top-0 right-0 min-h-screen'>
+                <ClipLoader
+                color={"#1eb854"}
+                loading={isLoading}
+                size={35}
+                cssOverride={override}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+                />
+            </div>
+        }
+        <ToastContainer
+           autoClose={3000}
+           limit={1}
+           hideProgressBar={false}
+           newestOnTop={false}
+           closeOnClick={false}
+           rtl={false}
+           pauseOnFocusLoss={false}
+           draggable={false}
+           pauseOnHover
+           theme="dark"
+        />
+        <div className='flex justify-end my-4'>
+            <Link 
+            to='/admin/dashboard/products/new'
+            className='btn btn-primary btn-outline normal-case btn-sm'>Tambah Produk</Link>
+        </div>
+        {/* <div className='mt-8'>
           <div className="overflow-x-auto w-full">
             <table className="table w-full">
               <thead>
@@ -86,7 +91,6 @@ export default function Products() {
                 {
                   products?.map((product, idx) => {
                     return(
-
                     <tr key={product.id}>
                       <td>
                         <div className="flex items-center space-x-3">
@@ -122,7 +126,16 @@ export default function Products() {
               </tbody>
             </table>
           </div>
-      </div>
+        </div> */}
+        <div>
+          {
+            products?.map((product, idx) => {
+              return (
+                <CardProduct key={idx} product={product}/>
+              )
+            })
+          }
+        </div>
     </>
 
   )

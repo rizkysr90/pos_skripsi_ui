@@ -1,70 +1,61 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { BeatLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
+import override from '../styles/spinner';
 
 export default function EmployeesNew() {
     const navigate = useNavigate();
-    const override = {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        left:"0",
-        top:"0",
-        backgroundColor:"rgba(0,0,0,.3)",
-        width: "100%",
-        zIndex: "99",
-        minHeight: "100%",
-        margin: "0 auto",
-    };
-    const [isLoading, setisLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        setisLoading(true);
+        setIsLoading(true);
         const form = e.target;
         const formData = new FormData(form);
         const formJSON = Object.fromEntries(formData.entries());
         try {
-            const res = await axios.post('http://localhost:8080/auth/register/users', formJSON);
-            setisLoading(false);
-            toast.success(`${res.response?.data.metadata.msg}`,{
-                position: toast.POSITION.TOP_RIGHT
-            });
+            const res = await axios.post(`${process.env.REACT_APP_API_HOST}/auth/register/users`, formJSON);
+            setIsLoading(false);
+            toast.success(`${res.response?.data.metadata.msg}`);
             navigate('/admin/dashboard/employees')
         } catch (error) {
-            let errMsg = 'Internal Server Error'
+            let errFromServer = error?.response?.data?.metadata;
+            let errMsg = error.message;
             if (error.response?.status !== 500) {
-                errMsg = error.response?.data?.metadata?.msg
+                if (errFromServer?.msg) {
+                  errMsg = errFromServer?.msg;
+                } 
             }
-            
-            toast.error(`Error ${error?.response?.status} - ${errMsg}`, {
-                position: toast.POSITION.TOP_RIGHT
-            });
-            setisLoading(false);
+            toast.error(`Error ${error?.response?.status} - ${errMsg}`);
+            setIsLoading(false);
         }
     }
   return (
     <>
-        <BeatLoader
-            color={'#6419E6'}
-            loading={isLoading}
-            cssOverride={override}
-            size={20}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-        /> 
+       {
+          isLoading && 
+          <div className='bg-base-100 absolute z-50 w-full left-0 top-0 min-h-screen'>
+                <ClipLoader
+                color={"#1eb854"}
+                loading={isLoading}
+                size={35}
+                cssOverride={override}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+                />
+            </div>
+        }
         <ToastContainer/>
-        <div className='mb-20'>
-            <div className='text-3xl text-primary'>Tambah Pegawai</div>
-            <form onSubmit={handleFormSubmit}>
+        <div className='mb-20 '>
+            <div className=' text-2xl font-bold text-center text-base-content'>Tambah Pegawai</div>
+            <form onSubmit={handleFormSubmit} className="w-full flex flex-col items-center">
                 <div className="form-control w-full max-w-xs mt-4">
                     <label className="label" htmlFor="name">
                         <span className="label-text">Nama</span>
                     </label>
-                    <input type="text" placeholder="Nama Karyawan" id="name" name='name' className="input input-bordered w-full max-w-xs" />
+                    <input type="text" placeholder="Nama Karyawan" id="name" name='name' 
+                    className="input input-bordered w-full max-w-xs " />
                 </div>
                 <div className="form-control w-full max-w-xs mt-4">
                     <label className="label" htmlFor="email">
@@ -114,7 +105,7 @@ export default function EmployeesNew() {
                     </div>
                     <button 
                     type='submit'
-                    className='btn btn-primary hover:text-white'>Simpan Data</button>
+                    className='btn btn-primary text-primary-content mt-4 normal-case'>Simpan Data</button>
                 </div>
             </form>
         </div>
