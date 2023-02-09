@@ -54,7 +54,7 @@ export const Drawer = () => {
             <div className="drawer-content flex flex-col bg-base-100">
                 {/* <!-- Page content here --> */}
                 <div className=' p-4 md:p-8  bg-base-100 relative pb-20'>
-                    <div className="btm-nav bg-neutral lg:hidden z-10  ">
+                    <div className="btm-nav bg-neutral lg:hidden z-10">
                         <label htmlFor="my-drawer-2" className="text-neutral-content">
                             <FontAwesomeIcon icon={faBars} size='xl'/>
                         </label>

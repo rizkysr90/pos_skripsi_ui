@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import override from '../styles/spinner';
 export default function Employees() {
-  const customId = "custom-id-yes";
   const [isLoading,setIsLoading] = useState(false);
   const [employees,setEmployees] = useState([]);
   const handleDeleteUsers = async (deletedId) => {
@@ -24,10 +23,7 @@ export default function Employees() {
           errMsg = error.response?.data?.metadata?.msg
       }
       
-      toast.error(`Error ${error?.response?.status} - ${errMsg}`, {
-          position: toast.POSITION.TOP_RIGHT,
-          toastId: customId
-      });
+      toast.error(`Error ${error?.response?.status} - ${errMsg}`);
       setIsLoading(false);
     }
   }

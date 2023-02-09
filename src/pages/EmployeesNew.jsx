@@ -48,7 +48,7 @@ export default function EmployeesNew() {
         }
         <ToastContainer/>
         <div className='mb-20 '>
-            <div className=' text-2xl font-bold text-center text-base-content'>Tambah Pegawai</div>
+            <div className='text-2xl font-bold text-center text-base-content'>Tambah Pegawai</div>
             <form onSubmit={handleFormSubmit} className="w-full flex flex-col items-center">
                 <div className="form-control w-full max-w-xs mt-4">
                     <label className="label" htmlFor="name">
