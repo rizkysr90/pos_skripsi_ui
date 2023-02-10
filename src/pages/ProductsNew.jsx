@@ -44,7 +44,6 @@ function ProductsNew() {
 
     }
     const handlePreviewImg = (e) => {
-        console.log(e.target.files);
         if (e.target.files && e.target.files.length > 0) {
             setPreviewImg(e.target.files[0])
         }
@@ -115,7 +114,6 @@ function ProductsNew() {
                     <div>
                             <p className='font-bold inline-block pb-2 text-2xl border-secondary border-b mb-4'>Informasi Produk</p>
                             <div className="form-control w-full md: max-w-md">
-                                
                                 <label className="label" htmlFor='product_img'>
                                     <div className="label-text font-bold text-base">Tambahkan Foto Produk
                                     </div>
@@ -148,7 +146,7 @@ function ProductsNew() {
                                     </div>
                                 )
                             }
-                            <div className="form-control w-full sm:max-w-md">
+                            <div className="form-control w-full sm:max-w-md mt-2">
                                 <label className="label" htmlFor="name">
                                     <div className="label-text font-bold text-base flex justify-between items-center w-full">
                                         Nama 
@@ -215,7 +213,7 @@ function ProductsNew() {
                                         </div>
                                     </label>
                                     <label className="input-group ">
-                                        <span className='text-white'>Rp</span>
+                                        <span className='text-base-content'>Rp</span>
                                         <input type="number" placeholder="5000" 
                                         name='buy_price'
                                         id='buy_price'
@@ -230,7 +228,7 @@ function ProductsNew() {
                                         </div>
                                     </label>
                                     <label className="input-group ">
-                                        <span className='text-white'>Rp</span>
+                                        <span className='text-base-content'>Rp</span>
                                         <input type="number" placeholder="5000" 
                                         id='sell_price'
                                         name='sell_price'

@@ -11,23 +11,57 @@ export default function Products() {
   
   const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]); 
+  const unArchiveProduct = async (id) => {
+      try {
+        setIsLoading(true);
+        const res = await axios.patch(`${process.env.REACT_APP_API_HOST}/products/archive/${id}?is_active=true`).then(res => res.data.metadata);
+        setIsLoading(false);
+        toast.success(`${res.msg}`);
+      } catch (error) {
+        let errFromServer = error?.response?.data?.metadata;
+        let errMsg = error.message;
+        if (error.response?.status !== 500) {
+            if (errFromServer?.msg) {
+              errMsg = errFromServer?.msg;
+            } 
+        }
+        toast.error(`Error ${error?.response?.status} - ${errMsg}`);
+        setIsLoading(false);
+      }
+  }
+  const archiveProduct = async (id) => {
+      try {
+        setIsLoading(true);
+        const res = await axios.patch(`${process.env.REACT_APP_API_HOST}/products/archive/${id}?is_active=false`).then(res => res.data.metadata);
+        setIsLoading(false);
+        toast.success(`${res.msg}`);
+      } catch (error) {
+        let errFromServer = error?.response?.data?.metadata;
+        let errMsg = error.message;
+        if (error.response?.status !== 500) {
+            if (errFromServer?.msg) {
+              errMsg = errFromServer?.msg;
+            } 
+        }
+        toast.error(`Error ${error?.response?.status} - ${errMsg}`);
+        setIsLoading(false);
+      }
+  }
   const handleDeleteProduct = async (deletedId) => {
     try {
       setIsLoading(true);
       const res = await axios.delete(`${process.env.REACT_APP_API_HOST}/products/${deletedId}`).then(res => res.data.metadata);
       setIsLoading(false);
-      toast.success(`${res.msg}`,{
-        position: toast.POSITION.TOP_RIGHT
-      });
+      toast.success(`${res.msg}`);
     } catch (error) {
-      let errMsg = 'Internal Server Error'
+      let errFromServer = error?.response?.data?.metadata;
+      let errMsg = error.message;
       if (error.response?.status !== 500) {
-          errMsg = error.response?.data?.metadata?.msg
+          if (errFromServer?.msg) {
+            errMsg = errFromServer?.msg;
+          } 
       }
-      
-      toast.error(`Error ${error?.response?.status} - ${errMsg}`, {
-          position: toast.POSITION.TOP_RIGHT
-      });
+      toast.error(`Error ${error?.response?.status} - ${errMsg}`);
       setIsLoading(false);
     }
   }
@@ -131,7 +165,12 @@ export default function Products() {
           {
             products?.map((product, idx) => {
               return (
-                <CardProduct key={idx} product={product}/>
+                <CardProduct key={idx} 
+                product={product} 
+                deleteProduct={handleDeleteProduct}
+                archiveProduct={archiveProduct}
+                unArchive={unArchiveProduct}
+                />
               )
             })
           }
