@@ -22,12 +22,27 @@ export const cashierSlice = createSlice({
     reducers : {
         addProduct : {
             reducer : (state, action) => {
-                state.products.push(action.payload) 
-            },
-            prepare : (text) => {
-                const id = nanoid()
-                return { payload : {id, text}}
+                let flagSameProduct = false;
+                state.products = state.products.map(data => {
+                    if (data.product_id === action.payload.product_id) {
+                        flagSameProduct = true;
+                        return {
+                            ...data, 
+                            qty : data.qty + action.payload.qty,
+                            amount : data.amount + action.payload.amount
+                        }
+                    } else {
+                        return data;
+                    }
+                })
+                if (!flagSameProduct) {
+                    state.products.push(action.payload) 
+                }
             }
+            // prepare : (text) => {
+            //     const id = nanoid()
+            //     return { payload : {id, text}}
+            // }
         },
         resetProduct : {
             reducer : (state) => {
@@ -38,10 +53,14 @@ export const cashierSlice = createSlice({
         },
         modifiedQty : {
             reducer : (state, action) => {
-                state.products.forEach((elm) => {
-                    if (elm.id === action.payload.id) {
-                        elm.text.qty = Number(action.payload.qty);
-                        elm.text.amount =  Number(action.payload.qty) *  Number(elm.text.originPrice)
+                state.products = state.products.map((elm) => {
+                    if (elm.product_id === action.payload.id) {
+                        elm.qty = Number(action.payload.qty);
+                        elm.amount =  Number(action.payload.qty) *  Number(elm.originPrice)
+
+                        return elm;
+                    } else {
+                        return elm;
                     }
                 })
             }
@@ -49,7 +68,7 @@ export const cashierSlice = createSlice({
         destroyProduct : {
             reducer : (state, action) => {
                 state.products = state.products.filter((elm) => {
-                    return elm.id !== action.payload.id 
+                    return elm.product_id !== action.payload.id 
                 })
             }
         },

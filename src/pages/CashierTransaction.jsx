@@ -2,24 +2,12 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import { BeatLoader } from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
 import { payAmount } from '../features/cashierSlice';
-
+import override from '../styles/spinner';
 export default function CashierTransaction() {
-    const override = {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        left:"0",
-        top:"0",
-        backgroundColor:"rgba(0,0,0,.3)",
-        width: "100%",
-        zIndex: "99",
-        minHeight: "100%",
-        margin: "0 auto",
-    };
+   
     const [isLoading, setisLoading] = useState(false);
     const {total, products}  = useSelector(
         (state) => state.cashier
@@ -54,14 +42,19 @@ export default function CashierTransaction() {
     }
     return (
     <>
-        <BeatLoader
-            color={'#6419E6'}
-            loading={isLoading}
-            cssOverride={override}
-            size={20}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-        /> 
+        {
+            isLoading && 
+            <div className='bg-base-100 fixed z-50 w-full left-0 top-0 right-0 min-h-screen'>
+              <ClipLoader
+              color={"#1eb854"}
+              loading={isLoading}
+              size={35}
+              cssOverride={override}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+              />
+          </div>
+        }
         <ToastContainer/>
         <div>
             <div className=''>
@@ -69,19 +62,19 @@ export default function CashierTransaction() {
                 <div className="divider"></div> 
                 {
                     products?.map((elm,idx) => {
-                    const data = elm.text
+                    
                     return(
                         <div key={elm.id}>
                             <div className='flex mb-4' >
                                 <div className='w-14 h-14 bg-primary flex justify-center items-center bg-neutral text-base-100 font-bold'>
-                                        {`${data?.qty}X`}
+                                        {`${elm?.qty}X`}
                                 </div>
                                 <div className='flex justify-between w-full'>
                                     <div className='flex flex-col text-sm ml-2'>
-                                        <p className='font-bold'>{data?.name}</p>
+                                        <p className='font-bold'>{elm?.name}</p>
                                         <div className='text-xs'>
-                                            <p className=''>Harga per produk : Rp{data?.originPrice}</p>
-                                            <p className=''>Total per produk : Rp{data?.amount}</p>
+                                            <p className=''>Harga per produk : Rp{elm?.originPrice}</p>
+                                            <p className=''>Total per produk : Rp{elm?.amount}</p>
                                         </div>
                                     </div>
                                 </div>

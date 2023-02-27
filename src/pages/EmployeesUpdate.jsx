@@ -23,10 +23,13 @@ export default function EmployeesUpdate() {
         const formData = new FormData(form);
         const formJSON = Object.fromEntries(formData.entries());
         try {
-            const res = await axios.put(`${process.env.REACT_APP_API_HOST}/users/${userId}`, formJSON);
+            const res = await axios.put(`${process.env.REACT_APP_API_HOST}/users/${userId}`, formJSON)
+            .then(res => res.data.metadata);
             setIsLoading(false);
-            toast.success(`${res.response?.data.metadata.msg}`);
-            navigate('/admin/dashboard/employees');
+            toast.success(`${res?.msg}`);
+            setTimeout(() => {
+                navigate('/admin/dashboard/employees');
+            }, 2000);
         } catch (error) {
             let errFromServer = error?.response?.data?.metadata;
             let errMsg = error.message;

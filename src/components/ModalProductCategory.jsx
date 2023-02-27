@@ -18,7 +18,7 @@ export default function ModalProductCategory(props) {
                             value={props.editableData?.name ? props.editableData?.name : ""} 
                             name='name' placeholder="Masukkan Nama Kategori" 
                             className="input input-bordered w-full max-w-xs" /> :
-                            <input type="text" name='name' placeholder="Masukkan Nama Kategori" 
+                            <input type="text" name='name' required placeholder="Masukkan Nama Kategori" 
                             className="input input-bordered w-full max-w-xs" />
                         }
                         <div className='flex justify-center mt-4'>
@@ -27,7 +27,7 @@ export default function ModalProductCategory(props) {
                             >Batal</button>
                             {
                                  props.editableData ? 
-                                 <button type='submit' className='btn btn-primary btn-sm normal-case'>Simpan data</button>
+                                 <button type='submit' className='btn btn-primary btn-sm normal-case'>Simpan Perubahan</button>
                                  
                                  :
                                  <button type='submit' className='btn btn-primary btn-sm normal-case'>Tambah</button>
