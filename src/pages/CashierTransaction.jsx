@@ -4,20 +4,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { toast, ToastContainer } from 'react-toastify';
-import { payAmount } from '../features/cashierSlice';
+import { payAmount, resetTransaction } from '../features/cashierSlice';
 import override from '../styles/spinner';
+import formatRupiah from '../utils/formatRupiah';
+
 export default function CashierTransaction() {
    
-    const [isLoading, setisLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const {total, products}  = useSelector(
         (state) => state.cashier
     );
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [pay, setPay] = useState('')
+    const [pay, setPay] = useState('');
     const handlePay = async () => {
         try {
-            setisLoading(true);
+            setIsLoading(true);
             const body = {
                 status: "selesai",
                 amount : total,
@@ -26,18 +28,19 @@ export default function CashierTransaction() {
     
             }
             const res = await axios.post(`${process.env.REACT_APP_API_HOST}/ofOrders`,body).then((res) => res.data);
-            setisLoading(false)
+            setIsLoading(false)
+            dispatch(resetTransaction())
             navigate(`success/${res.data.order_id}`);
         } catch (error) {
-            let errMsg = 'Internal Server Error'
+            let errFromServer = error?.response?.data?.metadata;
+            let errMsg = error.message;
             if (error.response?.status !== 500) {
-                errMsg = error.response?.data?.metadata?.msg
+                if (errFromServer?.msg) {
+                    errMsg = errFromServer?.msg;
+                } 
             }
-            
-            toast.error(`Error ${error?.response?.status} - ${errMsg}`, {
-                position: toast.POSITION.TOP_RIGHT
-            });
-            setisLoading(false);
+            toast.error(`Error ${error?.response?.status} - ${errMsg}`);
+            setIsLoading(false);
         }
     }
     return (
@@ -55,27 +58,37 @@ export default function CashierTransaction() {
               />
           </div>
         }
-        <ToastContainer/>
+        <ToastContainer
+           autoClose={3000}
+           limit={1}
+           hideProgressBar={false}
+           newestOnTop={false}
+           closeOnClick={false}
+           rtl={false}
+           pauseOnFocusLoss={false}
+           draggable={false}
+           pauseOnHover
+           theme="dark"
+        />
         <div>
             <div className=''>
-                <div className='font-bold text-2xl'>Produk Dibeli</div>
-                <div className="divider"></div> 
+                <div className='font-bold text-lg'>Produk Dibeli</div>
+                <div className="divider my-1"></div> 
                 {
                     products?.map((elm,idx) => {
                     
                     return(
-                        <div key={elm.id}>
+                        <div key={elm.product_id}>
                             <div className='flex mb-4' >
-                                <div className='w-14 h-14 bg-primary flex justify-center items-center bg-neutral text-base-100 font-bold'>
-                                        {`${elm?.qty}X`}
-                                </div>
                                 <div className='flex justify-between w-full'>
-                                    <div className='flex flex-col text-sm ml-2'>
-                                        <p className='font-bold'>{elm?.name}</p>
-                                        <div className='text-xs'>
-                                            <p className=''>Harga per produk : Rp{elm?.originPrice}</p>
-                                            <p className=''>Total per produk : Rp{elm?.amount}</p>
+                                    <div className='flex flex-col text-sm grow'>
+                                        <p className='font-bold text-xs'>{elm?.name}</p>
+                                        <div className='text-xs mt-1'>
+                                            <p className=''>Rp{formatRupiah(elm?.originPrice)} x {`${elm?.qty}`}</p>
                                         </div>
+                                    </div>
+                                    <div className='flex items-end'>
+                                        <p className='text-xs'>Rp{formatRupiah(elm?.amount)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -85,32 +98,31 @@ export default function CashierTransaction() {
                     })
                 }
             </div>
-            <div className="divider"></div> 
-            <div className='font-bold text-2xl flex justify-between'>
+            <div className="divider my-1"></div> 
+            <div className='font-bold text-lg flex justify-between'>
                 <span>
-                Total Tagihan
+                    Total Tagihan
                 </span>
-                <div className='font-bold text-lg'>Rp{total}</div>
+                <div className='font-bold text-lg'>Rp{formatRupiah(total)}</div>
             </div>
-            <div className="divider"></div> 
 
             <div className='font-bold flex flex-col items-end mt-1 '>
-                <span className='mb-2'>
-                Uang Diterima
-                </span>
                 <input 
                 value={pay ? pay : ""}
-                onChange={(e) => setPay(e.target.value)}
+                onChange={(e) => 
+                    setPay(e.target.value)
+                    
+                }
                 type="number" name='pay_amount' placeholder="Masukkan Jumlah Pembayaran"
-                className="input input-bordered w-full max-w-xs" />
-                <div className='btn btn-primary mt-4 '
+                className="input input-bordered w-full rounded-lg mt-2" />
+                <div className='btn btn-primary normal-case w-full rounded-lg mt-auto mt-4 '
                     onClick={() => {
                         dispatch(payAmount({pay}))
                         handlePay();
                       
                 }}
                 >
-                        Bayar Sekarang!
+                            Bayar Sekarang = Rp{formatRupiah(pay)}
                 </div>
             </div>
         </div>

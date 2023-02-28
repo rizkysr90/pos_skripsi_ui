@@ -16,6 +16,7 @@ import CashierTransaction from './pages/CashierTransaction';
 import CashierTransactionSuccess from './pages/CashierTransactionSuccess';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { Drawer } from './components/Drawer';
+import Transaction from './pages/Transaction';
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
             <Route path='cashier' element={<Cashier/>}/>
             <Route path='cashier/transactions' element={<CashierTransaction/>}/>
             <Route path='cashier/transactions/success/:trxId' element={<CashierTransactionSuccess/>}/>
-
+            <Route path='transactions' element={<Transaction/>} />
           </Route>
         </Routes>
       </BrowserRouter>

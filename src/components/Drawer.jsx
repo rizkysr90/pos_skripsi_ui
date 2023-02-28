@@ -136,7 +136,7 @@ export const Drawer = () => {
                         </li>
                         : null
                     }
-                    <li><NavLink to={'/'}  
+                    <li><NavLink to={'transactions'}  
                                 className= {({isActive}) => isActive ? 
                                 'btn btn-primary normal-case font-bold text-primary-content '
                                 :

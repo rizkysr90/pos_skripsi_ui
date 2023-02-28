@@ -1,7 +1,10 @@
+import { faCashRegister, faClose, faMoneyBill, faPencilAlt, faRemove, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {modifiedQty, destroyProduct, sumOrders} from '../features/cashierSlice';
+import formatRupiah from '../utils/formatRupiah';
 export default function ModalCashier({productsOrdered,resetSelectedProduct}) {
 
     const navigate = useNavigate();
@@ -14,15 +17,18 @@ export default function ModalCashier({productsOrdered,resetSelectedProduct}) {
   return (
     <>
         {/* The button to open modal */}
-        <label htmlFor="my-modal-6" className="btn btn-info rounded-lg w-full mt-4 flex normal-case justify-between">
+        <label htmlFor="my-modal-6" 
+        className="btn btn-info rounded-lg w-full mt-4 flex normal-case justify-between">
+
             <span className='font-bold'>
+            <FontAwesomeIcon icon={faCashRegister} className="mr-2"/>
             { productsOrdered ? `${productsOrdered.length} Produk ` : `0 Produk `} 
             </span>
-            <span className='font-bold'>Bayar : 
+            <span className='font-bold'>Bayar =
             {
                 productsOrdered ? 
-                `Rp ${productsOrdered.reduce((prev, curr) => prev + curr?.amount, 0)}`
-                : 'Rp 0'
+                ` Rp${formatRupiah(productsOrdered.reduce((prev, curr) => prev + curr?.amount, 0))}`
+                : 'Rp0'
             }
             </span>
         </label>
@@ -31,46 +37,68 @@ export default function ModalCashier({productsOrdered,resetSelectedProduct}) {
         <input type="checkbox" id="my-modal-6" className="modal-toggle" />
         <div className="modal modal-bottom sm:modal-middle">
             <div className="modal-box">
+            <div className='flex justify-end w-full '>
+                <label htmlFor="my-modal-6" 
+                className="btn btn-ghost rounded-lg normal-case text-2xl text-warning btn-sm"
+                    onClick={() => {
+                        setIsModified({
+                            id : "",
+                            active : false
+                        })
+                        setQtyModified(false)
+                    }}
+                >
+                    <FontAwesomeIcon icon={faClose}/>
+                </label>
+            </div>
+            <div className="alert shadow-xs text-sm p-0 mb-4">
+                <div className='w-full'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current flex-shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>Cek pesanan dahulu sebelum melakukan pembayaran</span>
+                </div>
+            </div>
             {
                 productsOrdered?.map((elm,idx) => {
-                    console.log("Ini adalah", elm);
                 return(
-                    <div key={elm.product_id}>
+                    <div key={elm.product_id} className="border-b border-base-content/30 mb-4">
                         <div className='flex mb-4' >
-                            <div className='w-14 h-14 bg-primary flex justify-center items-center bg-neutral text-base-100 font-bold'>
+                            <div className='w-14 h-14 bg-info flex justify-center items-center bg-neutral text-base-100 font-bold'>
                                     {`${elm?.qty}X`}
                             </div>
                             <div className='flex justify-between w-full'>
                                 <div className='flex flex-col text-sm ml-2'>
-                                    <p className='font-bold'>{elm?.name}</p>
-                                    <div className='text-xs'>
-                                        <p className=''>Harga per produk : Rp{elm?.originPrice}</p>
-                                        <p className=''>Total per produk : Rp{elm?.amount}</p>
+                                    <p className='font-bold text-xs'>{elm?.name}</p>
+                                    <div className='text-xs mt-1'>
+                                        <p className=''>Rp{formatRupiah(elm?.originPrice)}</p>
+                                        {/* <p className=''>Total per produk : Rp{elm?.amount}</p> */}
                                     </div>
                                 </div>
-                                <div className='flex items-center'>
-                                    <div className='btn btn normal-case mr-2 btn-outline btn-primary'
-                                        onClick={() => {
-                                            setIsModified((prev) => {
-                                                return {
-                                                    id : elm?.product_id,
-                                                    active : !prev.active
-                                                }
+                                <div className=' flex w-3/12 flex-col justify-between items-end'>
+                                    <div className='flex items-center'>
+                                        <div className='btn btn btn-xs normal-case mr-2 btn-outline btn-primary'
+                                            onClick={() => {
+                                                setIsModified((prev) => {
+                                                    return {
+                                                        id : elm?.product_id,
+                                                        active : !prev.active
+                                                    }
 
-                                            })
-                                            setQtyModified('')
+                                                })
+                                                setQtyModified('')
+                                            }}
+                                        >
+                                            {<FontAwesomeIcon icon={faPencilAlt}/>}  
+                                        </div>      
+                                        <div className='btn btn-xs normal-case btn-outline btn-primary'
+                                        onClick={() => {
+                                            dispatch(destroyProduct({id : elm.product_id}))
                                         }}
-                                    >
-                                        Ubah  
-                                    </div>      
-                                    <div className='btn btn normal-case btn-outline btn-primary'
-                                    onClick={() => {
-                                        dispatch(destroyProduct({id : elm.product_id}))
-                                    }}
-                                    >
-                                        Hapus   
-                                    </div>      
-                                </div>          
+                                        >
+                                            {<FontAwesomeIcon icon={faTrashAlt}/>}  
+                                        </div>      
+                                    </div>          
+                                    <p className='font-bold'>Rp{formatRupiah(elm?.amount)}</p>
+                                </div>
                             </div>
                         </div>
                         {
@@ -100,42 +128,38 @@ export default function ModalCashier({productsOrdered,resetSelectedProduct}) {
             }
             {
                 productsOrdered.length > 0 ? 
-                <div className='btn btn-sm w-full btn-error normal-case text-base-100'
+                <div className='btn btn-ghost w-full btn-error normal-case text-error rounded-lg'
                 onClick={() => {
                     resetSelectedProduct()
                 }}
                 >
+                {
+                    <FontAwesomeIcon icon={faTrashAlt} className="mr-2"/>
+                }
                 Hapus Semua
                 </div> : null
             }
-            <div className='flex justify-between bg-secondary px-4 py-2 mt-2 rounded'>
-                <div>Total</div>
-                <div className='font-bold'>{
-                    productsOrdered ? 
-                    `Rp ${productsOrdered.reduce((prev, curr) => prev + curr?.amount, 0)}`
-                    : 'Rp 0'
-                }</div>
-            </div>
-            <div className="divider"></div> 
-            <div className="modal-action">
-                <label htmlFor="my-modal-6" className="btn btn-warning"
-                onClick={() => {
-                    setIsModified({
-                            id : "",
-                            active : false
-                    })
-                    setQtyModified(false)
-                }}
-                >Tutup</label>
+           
+            <div className="modal-action mt-1">
                 {
                 productsOrdered.length > 0 ? 
-                <div className='btn btn-primary text-white'
+                <div 
+                className='btn btn-primary normal-case font-bold text-lg w-full rounded-lg flex justify-between items-center'
                     onClick={() => {
                         const sumPrice = productsOrdered.reduce((prev, curr) => prev + curr?.amount, 0);
                         dispatch(sumOrders({sumPrice}))
                         navigate('transactions');
                     }}
-                >Bayar Sekarang</div> : null
+                >
+                    <span>
+                        Bayar 
+                    </span>
+                    <span>
+                        {`Rp${formatRupiah(productsOrdered.reduce((prev, curr) => prev + curr?.amount, 0))}`}
+                    </span>
+                    
+               
+                </div> : null
                 }
                 
             </div>

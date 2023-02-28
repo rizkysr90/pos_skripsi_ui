@@ -51,6 +51,11 @@ export const cashierSlice = createSlice({
                 state.total = 0
             }
         },
+        resetTransaction : {
+            reducer : (state) => {
+                state.products = []
+            }
+        },
         modifiedQty : {
             reducer : (state, action) => {
                 state.products = state.products.map((elm) => {
@@ -86,5 +91,5 @@ export const cashierSlice = createSlice({
 })
 
 
-export const {addProduct, resetProduct, modifiedQty, destroyProduct, sumOrders,payAmount} = cashierSlice.actions;
+export const {addProduct, resetProduct, modifiedQty, destroyProduct, resetTransaction, sumOrders,payAmount} = cashierSlice.actions;
 export default cashierSlice.reducer;
