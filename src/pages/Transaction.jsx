@@ -5,8 +5,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import override from '../styles/spinner';
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faBoxesPacking, faSearch } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import formatRupiah from '../utils/formatRupiah';
+import moment from 'moment';
+import 'moment/locale/id'
+moment.locale('id');
 
 
 function Transaction() {
@@ -14,19 +18,56 @@ function Transaction() {
     const [tabOfOrders, setTabOfOrders] = useState(true);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+    const [metaOrders, setMetaOrders] = useState({});
     const [ordersData, setOrdersData] = useState([]);
-    useEffect(() => {
-        const getData = async () => {
-            const parsing1 = startDate.toISOString();
-            const parsing2 = endDate.toISOString();
+
+    let totalBtnPagination = Math.ceil(Number(metaOrders?.count_of_orders) / Number(metaOrders?.row));
+    
+    let handlePagination = async (idx) => {
+        if (idx !== metaOrders?.page) {
+            const parsing1 = moment(startDate).format('YYYY-MM-DD');
+            const parsing2 = moment(endDate).format('YYYY-MM-DD');
+         
             const endpoint  = tabOfOrders ? `/ofOrders` : `/onOrders/admin`;
             try {
                 setIsLoading(true);
                 const data = await axios.get
-                (`${process.env.REACT_APP_API_HOST}${endpoint}?startDate=${parsing1}&endDate=${parsing2}`)
+                (process.env.REACT_APP_API_HOST + endpoint + `?startDate=${parsing1}`
+                + `&endDate=${parsing2}&offset=${idx}`)
                 .then(res => res.data);
                 setIsLoading(false);
-                setOrdersData(data);                
+                setMetaOrders({...metaOrders, page : data?.data?.meta?.page})
+                setOrdersData(data?.data?.orders);                
+            } catch (error) {
+                let errFromServer = error?.response?.data?.metadata;
+                let errMsg = error.message;
+                if (error.response?.status !== 500) {
+                    if (errFromServer?.msg) {
+                        errMsg = errFromServer?.msg;
+                    } 
+                }
+                toast.error(`Error ${error?.response?.status} - ${errMsg}`);
+                setIsLoading(false);
+            }
+        }
+    }
+
+    useEffect(() => {
+        const getData = async () => {
+            const parsing1 = moment(startDate).format('YYYY-MM-DD');
+            const parsing2 = moment(endDate).format('YYYY-MM-DD');
+         
+            const endpoint  = tabOfOrders ? `/ofOrders` : `/onOrders/admin`;
+            try {
+                setIsLoading(true);
+                const data = await axios.get
+                (process.env.REACT_APP_API_HOST + endpoint + `?startDate=${parsing1}`
+                + `&endDate=${parsing2}&meta=1&offset=1`)
+                .then(res => res.data);
+                setIsLoading(false);
+                console.log(data);
+                setMetaOrders(data?.data?.meta);
+                setOrdersData(data?.data?.orders);                
             } catch (error) {
                 let errFromServer = error?.response?.data?.metadata;
                 let errMsg = error.message;
@@ -122,6 +163,75 @@ function Transaction() {
                 >
                     Penjualan Online
                 </div> 
+            </div>
+            <div className='flex justify-between p-2 text-xs bg-base-300'>
+                <div className='text-success'>{metaOrders?.count_of_orders} Penjualan</div>
+                <div className='font-bold text-success'>Rp{formatRupiah(metaOrders?.sum_of_orders)}</div>
+            </div>
+            {
+                ordersData.length !== 0 ? 
+                <div className='mt-3'>
+                    {
+                        ordersData.map((elm, idx) => {
+                            return (
+                                <div className='flex border-b border-base-content/30 pb-4 mb-3' key={idx}>
+                                    <div className=' flex items-center'>
+                                        <FontAwesomeIcon 
+                                        className='w-6 h-6'
+                                        icon={faBoxesPacking}/>
+                                    </div>
+                                    <div className='flex ml-3 flex-col text-xs grow'>
+                                        <div className='font-bold'>{elm.id}</div>
+                                        <div className=' opacity-70 text-[10px]'>{moment(elm.createdAt).format('dddd - DD/MM/YYYY')}</div>
+                                    </div>
+                                    <div className='flex '>
+                                        <div className='flex flex-col items-end'>
+                                                <div className='text-xs font-bold'>
+                                                    Rp{formatRupiah(elm.amount)}
+                                                </div>
+                                                <div className='text-xs opacity-70'>
+                                                    {moment(elm.createdAt).format('HH:mm')}
+                                                </div>
+                                        </div>
+                                        <div className='flex ml-3 items-center'>
+                                            <FontAwesomeIcon 
+                                            className='h-4 w-4 text-primary'
+                                            icon={faArrowRight}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                :
+                <div className='flex justify-center w-full'>Data Kosong</div> 
+            }
+            <div className='flex flex-col items-center'>
+                {/* <div className="btn-group ">
+                    <button className="btn btn-sm">1</button>
+                    <button className="btn btn-sm btn-active">2</button>
+                    <button className="btn btn-sm">3</button>
+                    <button className="btn btn-sm">4</button>
+                </div> */}
+                <div className="btn-group ">
+                    {
+                       Array.from({length: totalBtnPagination}, (_, i) => i + 1)
+                       //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                       .map((elm) => {
+                        return (
+                            <button 
+                            className={Number(metaOrders?.page) === elm ?
+                                "btn btn-sm btn-ghost text-primary text-bold" : "btn btn-sm btn-ghost"
+                            }
+                            onClick={() => handlePagination(elm)}
+                            >{elm}
+                            </button>
+                        )
+                       })
+                       
+                    }
+                </div>
             </div>
 
         </>
