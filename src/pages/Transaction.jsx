@@ -1,11 +1,12 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import DatePicker from 'react-datepicker';
 import { ClipLoader } from 'react-spinners';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import override from '../styles/spinner';
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 
 function Transaction() {
@@ -13,8 +14,33 @@ function Transaction() {
     const [tabOfOrders, setTabOfOrders] = useState(true);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-
-   
+    const [ordersData, setOrdersData] = useState([]);
+    useEffect(() => {
+        const getData = async () => {
+            const parsing1 = startDate.toISOString();
+            const parsing2 = endDate.toISOString();
+            const endpoint  = tabOfOrders ? `/ofOrders` : `/onOrders/admin`;
+            try {
+                setIsLoading(true);
+                const data = await axios.get
+                (`${process.env.REACT_APP_API_HOST}${endpoint}?startDate=${parsing1}&endDate=${parsing2}`)
+                .then(res => res.data);
+                setIsLoading(false);
+                setOrdersData(data);                
+            } catch (error) {
+                let errFromServer = error?.response?.data?.metadata;
+                let errMsg = error.message;
+                if (error.response?.status !== 500) {
+                    if (errFromServer?.msg) {
+                        errMsg = errFromServer?.msg;
+                    } 
+                }
+                toast.error(`Error ${error?.response?.status} - ${errMsg}`);
+                setIsLoading(false);
+            }
+        }
+        getData();
+    },[startDate, endDate, tabOfOrders])
     return (
         <>
              {
