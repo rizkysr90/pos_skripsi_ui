@@ -10,6 +10,7 @@ import axios from 'axios';
 import formatRupiah from '../utils/formatRupiah';
 import moment from 'moment';
 import 'moment/locale/id'
+import { Link } from 'react-router-dom';
 moment.locale('id');
 
 
@@ -98,16 +99,16 @@ function Transaction() {
                 </div>
             }
             <ToastContainer
-            autoClose={3000}
-            limit={1}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick={false}
-            rtl={false}
-            pauseOnFocusLoss={false}
-            draggable={false}
-            pauseOnHover
-            theme="dark"
+                autoClose={3000}
+                limit={1}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover
+                theme="dark"
             />
             {/* <div className='text-lg font-bold mt-1'>Riwayat Penjualan</div> */}
             <div className='mt-1'>
@@ -174,7 +175,9 @@ function Transaction() {
                     {
                         ordersData.map((elm, idx) => {
                             return (
-                                <div className='flex border-b border-base-content/30 pb-4 mb-3' key={idx}>
+                                <Link 
+                                to={`ofOrders/${elm.id}`}
+                                className='flex border-b border-base-content/30 pb-4 mb-3' key={idx}>
                                     <div className=' flex items-center'>
                                         <FontAwesomeIcon 
                                         className='w-6 h-6'
@@ -199,7 +202,7 @@ function Transaction() {
                                             icon={faArrowRight}/>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             )
                         })
                     }
