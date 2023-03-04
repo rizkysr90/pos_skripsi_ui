@@ -110,57 +110,6 @@ export default function Products() {
             to='/admin/dashboard/products/new'
             className='btn btn-primary btn-outline normal-case btn-sm'>Tambah Produk</Link>
         </div>
-        {/* <div className='mt-8'>
-          <div className="overflow-x-auto w-full">
-            <table className="table w-full">
-              <thead>
-                <tr>
-                  <th>Nama Produk</th>
-                  <th>Kategori</th>
-                  <th>Harga Jual</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  products?.map((product, idx) => {
-                    return(
-                    <tr key={product.id}>
-                      <td>
-                        <div className="flex items-center space-x-3">
-                          <div className="avatar">
-                            <div className="mask mask-squircle w-12 h-12">
-                              <img src={product?.url_img} alt="foto produk" />
-                            </div>
-                          </div>
-                          <div>
-                            <div className="font-bold">{product?.name}</div>
-                            <div className="text-sm opacity-50">Stok : {product?.stock}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        {product?.product_category?.name}
-                      </td>
-                      <td>Rp{product?.sell_price}</td>
-                      <th className=''>
-                        <Link to={`edit/${product?.id}`}>
-                              <FontAwesomeIcon icon={faPenToSquare} className="mr-4"></FontAwesomeIcon>
-                        </Link>
-                        <div className='cursor-pointer'
-                              onClick={() => handleDeleteProduct(product?.id)}
-                        >
-                              <FontAwesomeIcon icon={faTrash} className=""></FontAwesomeIcon>
-                        </div>
-                      </th>
-                    </tr>
-                    )
-                  })
-                }
-              </tbody>
-            </table>
-          </div>
-        </div> */}
         <div>
           {
             products?.map((product, idx) => {

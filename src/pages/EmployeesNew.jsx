@@ -17,7 +17,6 @@ export default function EmployeesNew() {
         try {
             const res = await axios.post(`${process.env.REACT_APP_API_HOST}/auth/register/users`, formJSON)
             .then((res) => res.data.metadata);
-            console.log(res);
             setIsLoading(false);
             toast.success(`${res?.msg}`);
             setTimeout(() => {
@@ -51,7 +50,18 @@ export default function EmployeesNew() {
                 />
             </div>
         }
-        <ToastContainer/>
+        <ToastContainer
+           autoClose={3000}
+           limit={1}
+           hideProgressBar={false}
+           newestOnTop={false}
+           closeOnClick={false}
+           rtl={false}
+           pauseOnFocusLoss={false}
+           draggable={false}
+           pauseOnHover
+           theme="dark"
+        />
         <div className='mb-20 '>
             <div className='text-2xl font-bold text-center text-base-content'>Tambah Pegawai</div>
             <form onSubmit={handleFormSubmit} className="w-full flex flex-col items-center">

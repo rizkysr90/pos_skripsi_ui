@@ -1,4 +1,4 @@
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react' 
@@ -9,12 +9,15 @@ import ModalCashier from '../components/ModalCashier';
 import { addProduct, resetProduct } from "../features/cashierSlice";
 import override from '../styles/spinner';
 import formatRupiah from '../utils/formatRupiah';
+import useSWR from 'swr';
 
 export default function Cashier() {
-    const [products, setProducts] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [search, setSearch] = useState('');
+    const [page, setPage] = useState('');
     const [quantity, setQuantity] = useState('');
+    const [category, setCategory] = useState('');
     const dispatch = useDispatch();
+    const [firstLoad, setFirstLoad] = useState(true);
     const productsOrdered  = useSelector(
         (state) => state.cashier.products
     );
@@ -33,23 +36,18 @@ export default function Cashier() {
     const resetSelectedProduct = () => {
       dispatch(resetProduct())
     }
-    useEffect(() => {
-        const getProduct = async () => {
-              try {
-                setIsLoading(true)
-                const res = await axios.get(`${process.env.REACT_APP_API_HOST}/products`).then((res) => res.data);
-                setProducts(res.data)
-                setIsLoading(false);
-              } catch (error) {
-                
-              }
-        }
-        getProduct();
-      }, [])
+    const api_url_products = `${process.env.REACT_APP_API_HOST}/products?search=${search}&page=${page}&c=${category}`;
+    const api_url_category = `${process.env.REACT_APP_API_HOST}/productCategories`;
+
+    const baseFetcher = (url) => axios.get(url).then((res) => res.data.data);
+    const { data : products, error, isLoading } = useSWR(api_url_products, baseFetcher)
+    const { data : pCategories, error : errCategory, isLoading : loadCategory} = useSWR(api_url_category, baseFetcher);
+    let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 20);
+   
     return (
     <>
       {
-        isLoading && 
+        isLoading && firstLoad && 
         <div className='bg-base-100 fixed z-50 w-full left-0 top-0 right-0 min-h-screen'>
               <ClipLoader
               color={"#1eb854"}
@@ -61,6 +59,7 @@ export default function Cashier() {
               />
           </div>
       }
+    
       <input type="checkbox" id="my-modal-7" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
@@ -98,18 +97,58 @@ export default function Cashier() {
               </div>
             </div>
       </div>
+      <div className='flex'>
+          <input type="text" 
+                    value={search}
+                    onChange={(e) => {
+                      setCategory('')
+                      setFirstLoad(false)
+                      setSearch(e.target.value)}}
+                    placeholder="Cari Produk"
+                    className="input input-sm input-bordered rounded w-full" />
+          <div className='btn btn-ghost btn-sm rounded -ml-10'>
+              <FontAwesomeIcon icon={faSearch}/>
+          </div>
+      </div>
+      {
+        search ? null : 
+        <select className="select rounded select-sm mt-4 w-full"
+            id='product_category_id'
+            name='product_category_id'
+            defaultValue={'DEFAULT'}
+            onChange={(e) => {
+                setCategory(e.target.value)
+            }}
+        >
+            <option disabled value={'DEFAULT'}>Pilih Kategori Produk!</option>
+            {
+                pCategories?.map((category) => {
+                    return (
+                        <option key={category.id} value={category.id}>
+                            {category.name}
+                        </option>
+                    )
+                })
+            }
+        </select>
+      }
       <ModalCashier
         productsOrdered={productsOrdered}
         resetSelectedProduct={resetSelectedProduct}
       />
-
+      {
+        error && <div>Error</div>
+      }
+      {
+        products?.products?.length === 0 && <div className='text-center mt-4'>Produk tidak ditemukan</div>
+      }
        
       <div className='mt-8'>
           <div className='flex flex-col'>
             {
-              products?.map((product, idx) => {
+              products?.products?.map((product, idx) => {
                 return (
-                  <div className='flex mb-4 border-b border-base-content/30 pb-4'>
+                  <div className='flex mb-4 border-b border-base-content/30 pb-4' key={idx}>
                     <Link to={`/admin/dashboard/products/edit/${product?.id}`} className="avatar mr-3">
                       <div className="mask mask-squircle w-12 h-12">
                         <img src={product?.url_img} alt="foto produk" />
@@ -142,6 +181,27 @@ export default function Cashier() {
                 )
               })
             }
+          </div>
+          <div className='flex justify-center'>
+            <div className="btn-group ">
+                      {
+                        Array.from({length: totalBtnPagination}, (_, i) => i + 1)
+                        //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                        .map((elm) => {
+                          return (
+                              <button 
+                              className={Number(products?.meta?.page) + 1 === elm ?
+                                  "btn btn-sm btn-ghost text-primary text-bold" : "btn btn-sm btn-ghost"
+                              }
+                              onClick={() => setPage(elm)}
+                              >{elm}
+                              </button>
+                          )
+                        })
+                        
+                      }
+            </div>
+
           </div>
       </div>
       
