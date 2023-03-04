@@ -1,7 +1,7 @@
 import { faClose, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react' 
+import React, { useState } from 'react' 
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
@@ -41,7 +41,7 @@ export default function Cashier() {
 
     const baseFetcher = (url) => axios.get(url).then((res) => res.data.data);
     const { data : products, error, isLoading } = useSWR(api_url_products, baseFetcher)
-    const { data : pCategories, error : errCategory, isLoading : loadCategory} = useSWR(api_url_category, baseFetcher);
+    const { data : pCategories } = useSWR(api_url_category, baseFetcher);
     let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 20);
    
     return (
@@ -194,6 +194,7 @@ export default function Cashier() {
                                   "btn btn-sm btn-ghost text-primary text-bold" : "btn btn-sm btn-ghost"
                               }
                               onClick={() => setPage(elm)}
+                              key={elm}
                               >{elm}
                               </button>
                           )

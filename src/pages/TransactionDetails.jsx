@@ -127,16 +127,16 @@ function TransactionDetails() {
             {/* Modal*/}
             <input type="checkbox" id="my-modal-6" className="modal-toggle" />
             <div className="modal modal-bottom sm:modal-middle">
-            <div className="modal-box">
-                <h3 className="font-bold text-lg">Konfirmasi</h3>
-                <p className="py-4">Yakin ingin membatalkan transaksi ini?</p>
-                <div className="modal-action">
-                    <label htmlFor="my-modal-6" className="btn btn-outline normal-case rounded-lg btn-sm">Kembali</label>
-                    <label htmlFor="my-modal-6"  className="btn btn-warning normal-case rounded-lg btn-sm"
-                        onClick={handleCancelOrder}
-                    >Batalkan</label>
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Konfirmasi</h3>
+                    <p className="py-4">Yakin ingin membatalkan transaksi ini?</p>
+                    <div className="modal-action">
+                        <label htmlFor="my-modal-6" className="btn btn-outline normal-case rounded-lg btn-sm">Kembali</label>
+                        <label htmlFor="my-modal-6"  className="btn btn-warning normal-case rounded-lg btn-sm"
+                            onClick={handleCancelOrder}
+                        >Batalkan</label>
+                    </div>
                 </div>
-            </div>
             </div>
             {/* <div className='btn btn-outline btn-sm mt-6 w-full normal-case rounded'>Batalkan</div> */}
             <ReactToPrint

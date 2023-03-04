@@ -66,7 +66,6 @@ function Transaction() {
                 + `&endDate=${parsing2}&meta=1&offset=1`)
                 .then(res => res.data);
                 setIsLoading(false);
-                console.log(data);
                 setMetaOrders(data?.data?.meta);
                 setOrdersData(data?.data?.orders);                
             } catch (error) {
