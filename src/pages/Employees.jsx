@@ -77,7 +77,7 @@ export default function Employees() {
         />
         <div className='md:hidden text-base-content font-bold text-2xl text-center'>Kelola Pegawai</div>
         <div className=' mt-4'>
-            <Link to = "/admin/dashboard/employees/new" className='btn btn-primary btn-outline normal-case btn-sm'>
+            <Link to = "/admin/dashboard/employees/new" className='btn btn-base-100 btn-outline normal-case btn-sm'>
                 Tambah Pegawai
             </Link>
         </div>

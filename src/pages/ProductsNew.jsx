@@ -110,7 +110,7 @@ function ProductsNew() {
             encType="multipart/form-data"
             className='mb-10'
             onSubmit={handleSubmit}>
-            <div className='bg-base-300 mt-8 rounded-lg p-4'>
+            <div className=' mt-3 rounded-lg p-4'>
                     <div>
                             <p className='font-bold inline-block pb-2 text-2xl border-secondary border-b mb-4'>Informasi Produk</p>
                             <div className="form-control w-full md: max-w-md">
@@ -201,7 +201,7 @@ function ProductsNew() {
                                     <label className="input-group">
                                         <input type="text" id="product_weight" name='product_weight' placeholder="100gr" 
                                         className="input input-bordered  w-full" />
-                                        <span className='bg-base-300'>Gram</span>
+                                        <span className='bg-base-   '>Gram</span>
                                     </label>
                                 </div>
                             </div>
@@ -256,9 +256,9 @@ function ProductsNew() {
                     </div>
                     
             </div>
-            <div className='bg-base-200 rounded-lg p-4 mb-4'>
+            <div className=' rounded-lg p-4 mb-4'>
                 <div>
-                    <p className='font-bold inline-block pb-2 text-2xl border-secondary border-b mb-4'>Informasi Produk</p>
+                    <p className='font-bold inline-block pb-2 text-2xl border-secondary border-b mb-4'>Informasi Pengiriman</p>
                     <div className="form-control w-full md:max-w-md mt-2">
                         <label className="label" htmlFor="shipping_weight">
                             <span className="label-text font-bold text-base flex justify-between items-center w-full">Berat Pengiriman </span>
@@ -268,7 +268,7 @@ function ProductsNew() {
                             id='shipping_weight'
                             name='shipping_weight'
                             className="input input-bordered w-full" />
-                            <span className=' text-white'>Gram</span>
+                            <span className=''>Gram</span>
                         </label>
                     </div>
                     <label className="label mt-3" htmlFor='is_sold_online'>

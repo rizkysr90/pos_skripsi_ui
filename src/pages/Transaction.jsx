@@ -114,7 +114,7 @@ function Transaction() {
                 <div className='flex justify-between items-center'>
                     <div className='basis-6/12 mr-4'>
                         <div className='w-full flex mb-2'>
-                            <div className="badge badge-primary badge-outline">Awal</div>
+                            <div className="badge badge-base-100 badge-outline">Awal</div>
                         </div>
                         <DatePicker
                             selected={startDate}
@@ -123,12 +123,12 @@ function Transaction() {
                             selectsStart
                             startDate={startDate}
                             endDate={endDate}
-                            className="w-full px-3 py-1 input-xs rounded"
+                            className="w-full px-3 py-1 input-xs border border-primary rounded"
                         />
                     </div>
                     <div className='basis-6/12'>
                         <div className='w-full flex justify-end mb-2'>
-                            <div className="badge badge-primary badge-outline">Akhir</div>
+                            <div className="badge badge-base-100 badge-outline">Akhir</div>
                         </div>
                         <DatePicker
                             selected={endDate}
@@ -138,7 +138,7 @@ function Transaction() {
                             startDate={startDate}
                             endDate={endDate}
                             minDate={startDate}
-                            className="w-full px-3 input-xs py-1 input-ghost rounded"
+                            className="w-full px-3 input-xs py-1 border border-primary  input-ghost rounded"
                         />
                     </div>
                 </div>
@@ -164,9 +164,9 @@ function Transaction() {
                     Penjualan Online
                 </div> 
             </div>
-            <div className='flex justify-between p-2 text-xs bg-base-300'>
-                <div className='text-success'>{metaOrders?.count_of_orders} Penjualan</div>
-                <div className='font-bold text-success'>Rp{formatRupiah(metaOrders?.sum_of_orders)}</div>
+            <div className='flex justify-between p-2 mt-2 bg-primary text-lg text-base-100'>
+                <div className=''>{metaOrders?.count_of_orders} Penjualan</div>
+                <div className='font-bold '>Rp{formatRupiah(metaOrders?.sum_of_orders)}</div>
             </div>
             {
                 ordersData.length !== 0 ? 
@@ -197,7 +197,7 @@ function Transaction() {
                                         </div>
                                         <div className='flex ml-3 items-center'>
                                             <FontAwesomeIcon 
-                                            className='h-4 w-4 text-primary'
+                                            className='h-4 w-4 text-info'
                                             icon={faArrowRight}/>
                                         </div>
                                     </div>

@@ -7,7 +7,7 @@ import formatRupiah from '../utils/formatRupiah';
 
 export default function CardProduct({product, deleteProduct, archiveProduct, unArchive}) {
   return (
-        <div className='mb-3 px-2 py-4 bg-base-200 shadow rounded-md'>
+        <div className='mb-3 px-4 py-4  rounded-md border-b border-base-content/30 '>
              {/* Modal*/}
             <input type="checkbox" id={`my-modal-${product?.id}`} className="modal-toggle" />
             <div className="modal modal-bottom sm:modal-middle">
@@ -37,8 +37,7 @@ export default function CardProduct({product, deleteProduct, archiveProduct, unA
                     <p className='mt-1'>Rp {formatRupiah(product?.sell_price)}</p>
                 </div>
             </div>
-            <div className="divider my-2"></div>
-            <div>
+            <div className='mt-3'>
                 <div className='flex justify-between text-xs opacity-70'>
                     <div className='flex items-center'>
                         <FontAwesomeIcon icon={faLayerGroup}></FontAwesomeIcon>

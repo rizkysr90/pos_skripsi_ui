@@ -42,7 +42,7 @@ export default function Cashier() {
     const baseFetcher = (url) => axios.get(url).then((res) => res.data.data);
     const { data : products, error, isLoading } = useSWR(api_url_products, baseFetcher)
     const { data : pCategories } = useSWR(api_url_category, baseFetcher);
-    let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 20);
+    let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 10);
    
     return (
     <>
@@ -92,7 +92,7 @@ export default function Cashier() {
                     setSelecetedProduct({})
                     setQuantity('')
                 }}  
-                className='btn btn-secondary btn-outline mt-4 w-full normal-case'>Masukkan ke keranjang
+                className='btn btn-secondary  mt-4 w-full normal-case'>Masukkan ke keranjang
                 </label>
               </div>
             </div>
@@ -117,6 +117,8 @@ export default function Cashier() {
             name='product_category_id'
             defaultValue={'DEFAULT'}
             onChange={(e) => {
+                setPage('')
+                setSearch('')
                 setCategory(e.target.value)
             }}
         >
@@ -164,7 +166,7 @@ export default function Cashier() {
                         <button className='btn btn-sm btn-secondary btn-disabled normal-case'>Kosong</button>
                         :
                         <label htmlFor="my-modal-7" 
-                        className="btn btn-sm normal-case btn-outline btn-secondary"
+                        className="btn btn-sm normal-case btn-outline btn-base-100"
                           onClick={() => {
                               if (product?.stock !== 0) {
                                 setSelecetedProduct({id: product?.id, 

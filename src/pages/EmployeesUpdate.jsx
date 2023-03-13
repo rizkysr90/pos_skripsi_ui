@@ -177,11 +177,11 @@ export default function EmployeesUpdate() {
                     </div>
                     <button 
                         type='reset'
-                        className='btn btn-warning normal-case my-4'>Reset Data
+                        className='btn btn-warning btn-outline normal-case my-4'>Reset Data
                     </button>
                     <button 
                         type='submit'
-                        className='btn btn-primary normal-case'>Simpan Data
+                        className='btn btn-primary text-white normal-case'>Simpan Data
                     </button>
                 </div>
             </form>

@@ -32,6 +32,7 @@ export default function Products() {
               errMsg = errFromServer?.msg;
             } 
         }
+        
         toast.error(`Error ${error?.response?.status} - ${errMsg}`);
         setLoading(false);
       }
@@ -79,7 +80,7 @@ export default function Products() {
 
   const { data : products, error, isLoading : loadingProduct } = useSWR(api_url_products, baseFetcher);
   const { data : pCategories } = useSWR(api_url_category, baseFetcher);
-  let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 20);
+  let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 10);
 
 
 
@@ -127,7 +128,7 @@ export default function Products() {
         <div className='flex justify-end my-4'>
             <Link 
             to='/admin/dashboard/products/new'
-            className='btn btn-primary btn-outline normal-case btn-sm'>Tambah Produk</Link>
+            className='btn btn-primary  btn-outline normal-case btn-sm'>Tambah Produk</Link>
         </div>
         <div className='flex'>
             <input type="text" 
@@ -144,11 +145,13 @@ export default function Products() {
         </div>
         {
           search ? null : 
-          <select className="select rounded select-sm mt-4 w-full"
+          <select className="select rounded select-bordered select-sm mt-4 w-full"
               id='product_category_id'
               name='product_category_id'
               defaultValue={'DEFAULT'}
               onChange={(e) => {
+                  setPage('')
+                  setSearch('')
                   setCategory(e.target.value)
               }}
           >
