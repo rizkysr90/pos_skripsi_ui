@@ -42,7 +42,7 @@ export default function Cashier() {
     const baseFetcher = (url) => axios.get(url).then((res) => res.data.data);
     const { data : products, error, isLoading } = useSWR(api_url_products, baseFetcher)
     const { data : pCategories } = useSWR(api_url_category, baseFetcher);
-    let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 10);
+    let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 12);
    
     return (
     <>

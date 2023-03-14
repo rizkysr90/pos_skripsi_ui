@@ -80,7 +80,7 @@ export default function Products() {
 
   const { data : products, error, isLoading : loadingProduct } = useSWR(api_url_products, baseFetcher);
   const { data : pCategories } = useSWR(api_url_category, baseFetcher);
-  let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 10);
+  let totalBtnPagination = Math.ceil(Number(products?.meta?.count) / 12);
 
 
 
