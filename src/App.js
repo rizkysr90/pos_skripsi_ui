@@ -18,6 +18,8 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import { Drawer } from './components/Drawer';
 import Transaction from './pages/Transaction';
 import TransactionDetails from './pages/TransactionDetails';
+import OnlineSales from './pages/OnlineSales';
+import OnlineSalesDetails from './pages/OnlineSalesDetails';
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
             <Route path='productCategories' element= {<ProductCategories/>}/>
             <Route path='products' element = {<Products/>}/>
             <Route path='products/new' element={<ProductsNew/>}/>
+            <Route path='onlineSales/' element={<OnlineSales/>}/>
+            <Route path='onlineSales/:orderId' element={<OnlineSalesDetails/>}/>
             <Route path='products/edit/:productId' element={<ProductsUpdate/>}/>
             <Route path='cashier' element={<Cashier/>}/>
             <Route path='cashier/transactions' element={<CashierTransaction/>}/>

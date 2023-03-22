@@ -51,9 +51,9 @@ export const Drawer = () => {
         { isLoading && <div>Okeee</div>}
        <div className="drawer drawer-mobile">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content flex flex-col bg-base-100">
+            <div className="drawer-content flex flex-col bg-base-200">
                 {/* <!-- Page content here --> */}
-                <div className=' p-4 md:p-8  bg-base-100 relative pb-20'>
+                <div className=' p-4 md:p-8  bg-base-200 relative pb-20'>
                     <div className="btm-nav bg-neutral lg:hidden z-10">
                         <label htmlFor="my-drawer-2" className="text-neutral-content">
                             <FontAwesomeIcon icon={faBars} size='xl'/>
@@ -70,7 +70,7 @@ export const Drawer = () => {
             </div> 
             <div className="drawer-side">
                 <label htmlFor="my-drawer-2" className="drawer-overlay"></label> 
-                <ul className="menu p-4 w-80 bg-base-200 relative min-h-screen text-base-content">
+                <ul className="menu p-4 w-80 bg-base-100 relative min-h-screen text-base-content">
                 {/* <!-- Sidebar content here --> */}
                     <li><Link to="/" className='font-bold text-3xl mb-4 text-primary'>
                             <span className='text-left w-full'>Nama Toko</span>
@@ -88,7 +88,7 @@ export const Drawer = () => {
                             </span>
                         </NavLink>
                     </li>
-                    <li><NavLink to ="/" 
+                    <li><NavLink to ="/admin/dashboard/onlineSales" 
                                 className= {({isActive}) => isActive ? 
                                 'btn btn-primary normal-case font-bold text-primary-content '
                                 :
