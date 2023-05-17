@@ -198,7 +198,7 @@ function OnlineSalesDetails() {
               order?.status !== "batal" && (
                 <div className="flex mt-3 ">
                   <label
-                    htmlFor="my-modal-6"
+                    htmlFor="my-modal-10"
                     className="btn btn-outline btn-success normal-case grow"
                   >
                     Konfirmasi Selesai
@@ -206,6 +206,16 @@ function OnlineSalesDetails() {
                 </div>
               )}
           </div>
+        </div>
+      )}
+      {order?.status === "selesai" && (
+        <div className="flex mt-3 ">
+          <label
+            htmlFor="my-modal-11"
+            className="btn btn-outline btn-success normal-case grow"
+          >
+            Batalkan Penjualan Ini
+          </label>
         </div>
       )}
       {order?.status === "batal" && (
@@ -310,12 +320,12 @@ function OnlineSalesDetails() {
           </div>
         </div>
       </div>
-      <input type="checkbox" id="my-modal-9" className="modal-toggle" />
+      <input type="checkbox" id="my-modal-10" className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-lg">Konfirmasi Selesai</h3>
-            <label htmlFor="my-modal-9" className="btn btn-ghost">
+            <label htmlFor="my-modal-10" className="btn btn-ghost">
               <FontAwesomeIcon icon={faClose} />
             </label>
           </div>
@@ -325,17 +335,44 @@ function OnlineSalesDetails() {
           </p>
           <div className="modal-action">
             <label
-              htmlFor="my-modal-9"
+              htmlFor="my-modal-10"
               className="btn normal-case btn-success btn-outline"
             >
               Kembali
             </label>
             <label
-              htmlFor="my-modal-9"
+              htmlFor="my-modal-10"
               className="btn normal-case btn-success text-base-100"
               onClick={handleFinish}
             >
-              Siap dipickup
+              Selesai
+            </label>
+          </div>
+        </div>
+      </div>
+      <input type="checkbox" id="my-modal-11" className="modal-toggle" />
+      <div className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <div className="flex justify-between items-center">
+            <h3 className="font-bold text-lg">Konfirmasi Pembataln</h3>
+            <label htmlFor="my-modal-11" className="btn btn-ghost">
+              <FontAwesomeIcon icon={faClose} />
+            </label>
+          </div>
+          <p>Yakin untuk membatalkan transaksi ini?</p>
+          <div className="modal-action">
+            <label
+              htmlFor="my-modal-11"
+              className="btn normal-case btn-success btn-outline"
+            >
+              Kembali
+            </label>
+            <label
+              htmlFor="my-modal-11"
+              className="btn normal-case btn-success text-base-100"
+              onClick={handleCancelOrder}
+            >
+              Batalkan
             </label>
           </div>
         </div>
