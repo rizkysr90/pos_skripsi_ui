@@ -200,9 +200,11 @@ function TransactionDetails() {
         </div>
       </div>
       <div className="divider"></div>
-      <div className="flex justify-center">
-        <div className="text-4xl">BATAL</div>
-      </div>
+      {order?.order?.status === "batal" && (
+        <div className="flex justify-center">
+          <div className="text-4xl">BATAL</div>
+        </div>
+      )}
     </>
   );
 }

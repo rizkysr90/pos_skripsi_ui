@@ -111,66 +111,77 @@ export const Drawer = () => {
                 <span className="text-left w-full">Rizki Plastik</span>
               </Link>
             </li>
-            <li>
-              <NavLink
-                to="/admin/dashboard/cashier"
-                className={({ isActive }) =>
-                  isActive
-                    ? "btn btn-primary normal-case font-bold text-primary-content "
-                    : "btn btn-ghost normal-case "
-                }
-              >
-                <span className="text-left w-full flex items-center">
-                  <FontAwesomeIcon icon={faCashRegister} className="mr-3" />
-                  Penjualan Offline
-                </span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/admin/dashboard/onlineSales"
-                className={({ isActive }) =>
-                  isActive
-                    ? "btn btn-primary normal-case font-bold text-primary-content "
-                    : "btn btn-ghost normal-case "
-                }
-              >
-                <span className="text-left w-full flex items-center">
-                  <FontAwesomeIcon icon={faMoneyCheckDollar} className="mr-3" />
-                  Penjualan Online
-                </span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/admin/dashboard/products"
-                className={({ isActive }) =>
-                  isActive
-                    ? "btn btn-primary normal-case font-bold text-primary-content "
-                    : "btn btn-ghost normal-case "
-                }
-              >
-                <span className="text-left w-full flex items-center">
-                  <FontAwesomeIcon icon={faWarehouse} className="mr-3" />
-                  Kelola Produk
-                </span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/admin/dashboard/productCategories"
-                className={({ isActive }) =>
-                  isActive
-                    ? "btn btn-primary normal-case font-bold text-primary-content "
-                    : "btn btn-ghost normal-case "
-                }
-              >
-                <span className="text-left w-full flex items-center">
-                  <FontAwesomeIcon icon={faLayerGroup} className="mr-3" />
-                  Kelola Kategori
-                </span>
-              </NavLink>
-            </li>
+            {user?.role !== "admin" && (
+              <li>
+                <NavLink
+                  to="/admin/dashboard/cashier"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "btn btn-primary normal-case font-bold text-primary-content "
+                      : "btn btn-ghost normal-case "
+                  }
+                >
+                  <span className="text-left w-full flex items-center">
+                    <FontAwesomeIcon icon={faCashRegister} className="mr-3" />
+                    Penjualan Offline
+                  </span>
+                </NavLink>
+              </li>
+            )}
+            {user?.role !== "admin" && (
+              <li>
+                <NavLink
+                  to="/admin/dashboard/onlineSales"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "btn btn-primary normal-case font-bold text-primary-content "
+                      : "btn btn-ghost normal-case "
+                  }
+                >
+                  <span className="text-left w-full flex items-center">
+                    <FontAwesomeIcon
+                      icon={faMoneyCheckDollar}
+                      className="mr-3"
+                    />
+                    Penjualan Online
+                  </span>
+                </NavLink>
+              </li>
+            )}
+            {user?.role !== "admin" && (
+              <li>
+                <NavLink
+                  to="/admin/dashboard/products"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "btn btn-primary normal-case font-bold text-primary-content "
+                      : "btn btn-ghost normal-case "
+                  }
+                >
+                  <span className="text-left w-full flex items-center">
+                    <FontAwesomeIcon icon={faWarehouse} className="mr-3" />
+                    Kelola Produk
+                  </span>
+                </NavLink>
+              </li>
+            )}
+            {user?.role !== "admin" && (
+              <li>
+                <NavLink
+                  to="/admin/dashboard/productCategories"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "btn btn-primary normal-case font-bold text-primary-content "
+                      : "btn btn-ghost normal-case "
+                  }
+                >
+                  <span className="text-left w-full flex items-center">
+                    <FontAwesomeIcon icon={faLayerGroup} className="mr-3" />
+                    Kelola Kategori
+                  </span>
+                </NavLink>
+              </li>
+            )}
             {user?.role === "admin" ? (
               <li>
                 <NavLink
@@ -188,21 +199,26 @@ export const Drawer = () => {
                 </NavLink>
               </li>
             ) : null}
-            <li>
-              <NavLink
-                to={"transactions"}
-                className={({ isActive }) =>
-                  isActive
-                    ? "btn btn-primary normal-case font-bold text-primary-content "
-                    : "btn btn-ghost normal-case "
-                }
-              >
-                <span className="text-left w-full flex items-center">
-                  <FontAwesomeIcon icon={faClockRotateLeft} className="mr-3" />
-                  Riwayat Penjualan
-                </span>
-              </NavLink>
-            </li>
+            {user?.role !== "admin" && (
+              <li>
+                <NavLink
+                  to={"transactions"}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "btn btn-primary normal-case font-bold text-primary-content "
+                      : "btn btn-ghost normal-case "
+                  }
+                >
+                  <span className="text-left w-full flex items-center">
+                    <FontAwesomeIcon
+                      icon={faClockRotateLeft}
+                      className="mr-3"
+                    />
+                    Riwayat Penjualan
+                  </span>
+                </NavLink>
+              </li>
+            )}
             <li className="mt-auto">
               <button
                 onClick={handleLogout}

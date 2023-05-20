@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import React from "react";
 import rupiahFormat from "../utils/formatRupiah";
+import waButton from "../icon/WhatsAppButtonGreenMedium.png";
 
 moment.locale("id");
 function OrderDetails({ order }) {
@@ -173,6 +174,16 @@ function OrderDetails({ order }) {
             </div>
           </div>
         )}
+        <div className="flex flex-col items-center mt-4">
+          <div>No WA : {order?.whatsapp}</div>
+          <a
+            href={`https://wa.me/${order?.whatsapp}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src={waButton} alt="chat on whatasapp"></img>
+          </a>
+        </div>
         <div className="collapse">
           <input type="checkbox" className="peer" />
           <div
