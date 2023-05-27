@@ -14,7 +14,9 @@ function ProductsUpdate() {
   const [isLoading, setIsLoading] = useState(false);
   const [previewImg, setPreviewImg] = useState("");
   const [products, setProducts] = useState({});
-
+  const [currentCategories, setCurrentCategories] = useState(
+    products?.product_category_id
+  );
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -211,7 +213,10 @@ function ProductsUpdate() {
                 className="select select-bordered w-full"
                 id="product_category_id"
                 name="product_category_id"
-                value={products?.product_category_id}
+                value={currentCategories}
+                onChange={(e) => {
+                  setCurrentCategories(e.target.value);
+                }}
               >
                 <option disabled value={"DEFAULT"}>
                   Pilih Kategori Produk!
