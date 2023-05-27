@@ -117,12 +117,15 @@ function TransactionDetails() {
         </div>
       </div>
       {/* The button to open modal */}
-      <label
-        htmlFor="my-modal-6"
-        className="btn btn-outline btn-sm mt-6 w-full normal-case rounded"
-      >
-        Batalkan
-      </label>
+      {
+        order?.order?.status !== 'batal' &&
+        <label
+          htmlFor="my-modal-6"
+          className="btn btn-outline btn-sm mt-6 w-full normal-case rounded"
+        >
+          Batalkan
+        </label>
+      }
 
       {/* Modal*/}
       <input type="checkbox" id="my-modal-6" className="modal-toggle" />

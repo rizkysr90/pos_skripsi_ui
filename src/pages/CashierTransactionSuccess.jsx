@@ -18,7 +18,6 @@ export default function CashierTransactionSuccess() {
   const [isLoading, setIsLoading] = useState(false);
   const { total, payAmount } = useSelector((state) => state.cashier);
   const [orders, setOrders] = useState({});
-  console.log(orders);
   let { trxId } = useParams();
   const navigate = useNavigate();
   const componentRef = useRef();

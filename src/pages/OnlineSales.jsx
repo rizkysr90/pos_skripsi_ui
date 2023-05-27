@@ -10,7 +10,6 @@ moment.locale('id')
 function OnlineSales() {
     const fetcher = async (url) => await axios.get(url).then(res => res.data.data);
     const {data : order, isLoading : loadOrder} = useSWR(`${process.env.REACT_APP_API_HOST}/onOrders/all`, fetcher);
-    console.log(order);
     return (
         <>
             <div className=''>
@@ -61,6 +60,10 @@ function OnlineSales() {
                                         {
                                             data?.status === 'selesai' &&
                                             <div className='badge badge-success badge-outline badge-sm'>Selesai</div>
+                                        }
+                                         {
+                                            data?.status === 'batal' &&
+                                            <div className='badge badge-error badge-outline badge-sm'>Batal</div>
                                         }
                                         
                                         <div className='flex'>

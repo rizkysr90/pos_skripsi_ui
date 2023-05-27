@@ -21,7 +21,6 @@ function ProductsUpdate() {
     const formData = new FormData(form);
     const formJSON = Object.fromEntries(formData.entries());
     formJSON.is_active = true;
-    console.log(formJSON);
     try {
       setIsLoading(true);
       const res = await axios
@@ -53,7 +52,6 @@ function ProductsUpdate() {
     }
   };
   const handlePreviewImg = (e) => {
-    console.log(e.target.files);
     if (e.target.files && e.target.files.length > 0) {
       setPreviewImg(e.target.files[0]);
     }

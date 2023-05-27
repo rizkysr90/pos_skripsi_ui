@@ -72,7 +72,7 @@ function OrderDetails({ order }) {
         <div className="flex text-sm justify-between w-full mt-3">
           <div>Status : </div>
           {order?.status === "batal" && (
-            <div className="badge badge-success badge-outline badge-sm">
+            <div className="badge badge-error badge-outline badge-sm">
               Batal
             </div>
           )}
@@ -161,6 +161,14 @@ function OrderDetails({ order }) {
             <div>{moment(order?.paidAt).format("DD MMM YYYY, HH:mm")}</div>
           </div>
         )}
+        {
+          order?.shipping_method === "delivery_order" && (
+            <div className="flex text-sm justify-between w-full mt-3">
+              <div>Maps : </div>
+              <div>{`${order?.lat}, ${order?.lng}`}</div>
+          </div>
+          )
+        }
         {order?.shipping_method === "delivery_order" && (
           <div className="text-sm mt-3">
             <div className="font-bold text-base mt-3">Alamat Pengiriman</div>

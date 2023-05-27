@@ -53,7 +53,6 @@ export default function EmployeesUpdate() {
         setEmployee(res.data);
         setIsLoading(false);
       } catch (error) {
-        console.log("tess");
         let errFromServer = error?.response?.data?.metadata;
         let errMsg = error.message;
         if (error.response?.status !== 500) {

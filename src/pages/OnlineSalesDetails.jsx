@@ -154,16 +154,6 @@ function OnlineSalesDetails() {
           <div className="bg-base-100 p-3 rounded">
             {/* <div className='font-bold text-base mt-3'>Atur Pesanan</div>
                         <div className="divider my-1"></div> */}
-            {order?.shipping_address && (
-              <a
-                href={`https://web.whatsapp.com/send?phone=${address[1]}&text=message&app_absent=0`}
-                target={"_blank"}
-                rel="noreferrer"
-                className="btn btn-outline btn-base-200 normal-case grow w-full"
-              >
-                Chat dengan pembeli
-              </a>
-            )}
             {order?.shipping_method === "pickup" &&
               order?.status === "diproses" && (
                 <label
