@@ -271,8 +271,19 @@ function Transaction() {
                 </div>
                 <div className="flex ">
                   <div className="flex flex-col items-end">
-                    <div className="text-xs font-bold">
-                      Rp{formatRupiah(elm.amount)}
+                    <div className="flex items-center text-xs">
+                      {elm.status === "batal" && (
+                        <div className="text-error">Batal - </div>
+                      )}
+                      <div
+                        className={`text-xs font-bold ${
+                          elm.status === "batal"
+                            ? "line-through text-red opacity-70"
+                            : ""
+                        }`}
+                      >
+                        Rp{formatRupiah(elm.amount)}
+                      </div>
                     </div>
                     <div className="text-xs opacity-70">
                       {moment(elm.createdAt).format("HH:mm")}
@@ -310,8 +321,19 @@ function Transaction() {
                 </div>
                 <div className="flex ">
                   <div className="flex flex-col items-end">
-                    <div className="text-xs font-bold">
-                      Rp{formatRupiah(elm.amount)}
+                    <div className="flex items-center text-xs">
+                      {elm.status === "batal" && (
+                        <div className="text-error">Batal - </div>
+                      )}
+                      <div
+                        className={`text-xs font-bold ${
+                          elm.status === "batal"
+                            ? "line-through text-red opacity-70"
+                            : ""
+                        }`}
+                      >
+                        Rp{formatRupiah(elm.amount)}
+                      </div>
                     </div>
                     <div className="text-xs opacity-70">
                       {moment(elm.createdAt).format("HH:mm")}
