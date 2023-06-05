@@ -14,7 +14,7 @@ import axios from "axios";
 import formatRupiah from "../utils/formatRupiah";
 import moment from "moment";
 import "moment/locale/id";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 moment.locale("id");
 
 function Transaction() {
@@ -30,7 +30,7 @@ function Transaction() {
   let totalBtnPagination = Math.ceil(
     Number(metaOrders?.count_of_orders) / Number(metaOrders?.row)
   );
-
+  const navigate = useNavigate();
   let handlePagination = async (idx) => {
     if (idx !== metaOrders?.page) {
       const parsing1 = moment(startDate).format("YYYY-MM-DD");
@@ -100,6 +100,7 @@ function Transaction() {
       setIsLoading(false);
     }
   };
+  console.log(ordersData);
   useEffect(() => {
     const getData = async () => {
       const parsing1 = moment(startDate).format("YYYY-MM-DD");
@@ -213,7 +214,28 @@ function Transaction() {
           <FontAwesomeIcon icon={faSearch} />
         </div>
       </div>
-      <div className="tabs w-full mt-5">
+      <div className="flex justify-end mt-3">
+        <div
+          className="btn normal-case btn-sm btn-secondary"
+          onClick={() => {
+            navigate("/print/transactions", {
+              state: {
+                ordersData: ordersData,
+                date: {
+                  startDate,
+                  endDate,
+                },
+                totalSales: tabOfOrders
+                  ? metaOrders?.sum_of_orders
+                  : metaOnOrders?.sum_of_orders,
+              },
+            });
+          }}
+        >
+          Cetak
+        </div>
+      </div>
+      <div className="tabs w-full mt-1">
         <div
           className={
             tabOfOrders

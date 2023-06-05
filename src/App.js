@@ -20,6 +20,8 @@ import Transaction from "./pages/Transaction";
 import TransactionDetails from "./pages/TransactionDetails";
 import OnlineSales from "./pages/OnlineSales";
 import OnlineSalesDetails from "./pages/OnlineSalesDetails";
+import PrintHistoryTransaction from "./components/PrintHistoryTransaction";
+import PrintTransactions from "./pages/PrintTransactions";
 
 function App() {
   return (
@@ -28,6 +30,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/oke" element={<div>Oke nice progress</div>} />
+          <Route
+            path="/print/transactions"
+            element={<PrintHistoryTransaction />}
+          />
           {/* <Route path="/auth/login" element={<Login/>} /> */}
           <Route path="/admin/dashboard" element={<Drawer />}>
             <Route path="employees" element={<Employees />} />
