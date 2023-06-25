@@ -81,11 +81,14 @@ function ProductsUpdate() {
         }
         toast.error(`Error ${error?.response?.status} - ${errMsg}`);
         setIsLoading(false);
+        setTimeout(() => {
+          navigate("/admin/dashboard/products");
+        }, 2000);
       }
     };
 
     getData();
-  }, [productId]);
+  }, [productId, navigate]);
 
   return (
     <>

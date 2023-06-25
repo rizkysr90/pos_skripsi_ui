@@ -100,7 +100,6 @@ function Transaction() {
       setIsLoading(false);
     }
   };
-  console.log(ordersData);
   useEffect(() => {
     const getData = async () => {
       const parsing1 = moment(startDate).format("YYYY-MM-DD");
